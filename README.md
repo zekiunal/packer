@@ -98,7 +98,7 @@ Bu konu daha sonra ayrıntılı olarak ele alınacaktır. Fakat gördüğünüz 
 
 > `-machine-readable` parametresi, otomatik ortamlar için tasarlanmıştır ve etkileşimli ortamlar için tasarlanmış `-debug` parametresi ile  özelleşmiştir.
 
-# Makine tarafından okunabilir çıktı biçimi
+### Makine tarafından okunabilir çıktı biçimi
 
 Makine tarafından okunabilir format, satır yönelimli, virgülle sınırlandırılmış bir metin biçimidir. Bu, `Ruby` veya `Python` gibi  programlama dillerine ek olarak `awk` veya `grep` gibi standart Unix araçlarını kullanarak ayrıştırmanın daha kolay olmasını sağlar.
 
@@ -118,4 +118,10 @@ Her bileşen aşağıda açıklanmıştır:
 
 **data** Önceki türle ilişkili olan virgülle ayrılmış değerlerdir. Bu verilerin tam miktarı ve anlamı türüne bağlıdır, bu nedenle tam olarak anlamak için türe ait belgeleri okumanız gerekir.
 
+Within the format, if data contains a comma, it is replaced with %!(PACKER_COMMA). This was preferred over an escape character such as \' because it is more friendly to tools like awk.
 
+Newlines within the format are replaced with their respective standard escape sequence. Newlines become a literal \n within the output. Carriage returns become a literal \r.
+
+### Makine Tarafından Okunabilir Mesaj Türleri
+
+Makine tarafından okunabilen mesaj türleri, `machine-readable format` dokümantasyon bölümünde bulunabilir. Bu bölüm, varsayılan olarak Packer çekirdeğiyle birlikte gönderilen tüm bileşenlerin yanı sıra Packer tarafından sunulan tüm ileti türleriyle ilgili belgeler içerir.
