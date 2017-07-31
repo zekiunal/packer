@@ -96,7 +96,7 @@ $ packer -machine-readable version
 
 Bu konu daha sonra ayrıntılı olarak ele alınacaktır. Fakat gördüğünüz gibi, makina dostu bir çıktı elde etmek çok kolaydır. Deneyimlemek için `-machine-readable` parametresi ile  diğer bazı komutları deneyin!
 
-> `-machine-readable` parametresi, otomatik ortamlar için tasarlanmıştır ve etkileşimli ortamlar için tasarlanmış `-debug` parametresi ile  özelleşmiştir.
+> `-machine-readable` parametresi, otomatikleştirmeye yönelik için tasarlanmıştır ve etkileşimli ortamlar için tasarlanmış `-debug` parametresi nin yetenekleri ile özelleşmiştirilmiştir.
 
 ### Makine tarafından okunabilir çıktı biçimi
 
