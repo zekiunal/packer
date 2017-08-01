@@ -173,7 +173,7 @@ Komut, çeşitli bileşenlerdeki gerçek kurulumları doğrulamaz (`validate` ko
 
 #### Kullanım Örneği
 
-Temel bir şablon, şöyle bir çıktı üretebilir:
+Basit bir şablon, şöyle bir çıktı üretebilir:
 
 ```
 $ packer inspect template.json
