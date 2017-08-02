@@ -70,6 +70,20 @@ Aşağıda, HashiCorp'un açık kaynak projelerinin özetleri ve Atlas'ın tam b
 
 ![Atlas](https://raw.githubusercontent.com/zekiunal/packer/master/atlas.png)
 
+[Atlas](https://atlas.hashicorp.com/) HashiCorp'un tek ticari ürünüdür. Uygulama sürüm yönetimini, denetlenebilir, tekrarlanabilir ve işbirliğine dayalı yapmak için Packer, Terraform ve Consul'ü birleştirir.
+
+[Packer](https://www.packer.io) makine görüntüleri ve AMI'ler, OpenStack görüntüleri, Docker konteynerleri gibi konuşlandırılabilir çıktılar oluşturmak için kullanılan bir HashiCorp aracıdır.
+
+[Terraform](https://www.terraform.io) altyapıyı oluşturmak, birleştirmek ve değiştirmek için kullanılan bir HashiCorp aracıdır. Atlas iş akışında Terraform, çıktı kayıt defterini okur ve altyapıyı yönetir.
+
+[Consul](https://www.consul.io) servisleri bulma/tanımlama, servis kayıt defteri tutma ve sağlık kontrollerini yapmak için kullanılan bir HashiCorp aracıdır. Atlas iş akışında Consul, Packer yapım aşamasında yapılandırılır ve çıktıda bulunan hizmetleri tanımlar. Consul, Packer ile yapım aşamasında yapılandırıldığından, çıktı Terraform ile dağıtıldığında, tamamıyla bağımlılıklar ve önceden tanımlanmış servis tanımları ile yapılandırılmıştır. Bu, çalışma zamanında yapılandırma hatası nedeniyle üretimde sağlıksız bir düğüm olma riskini büyük ölçüde azaltır.
+
+[Serf](https://www.serf.io) kümeleme yönetimi ve hata algılama için bir HashiCorp aracıdır. Temel olarak Consul, hizmet tanımlama için Serf'in gossip protokolünü kullanır.
+
+[Vagrant](https://www.vagrantup.com) yayına alınacak geliştirme ortamlarını yönetmek için kullanılan bir HashiCorp aracıdır. Vagrant, farklı ortamlar ile bir proje geliştirmenin zorluğunu azaltır ve yayın ortamında  beklenmedik davranış riskini azaltır. Geliştirme ve yayın ortamı arasındaki denkliğin korunması için Vagrant Packer'ın desteği ile yayın ortamı çıktılarını  paralel olarak kurabilir.
+
+[Nomad](https://www.nomadproject.io) bir grup makineyi yönetmek ve bu makineler ile ilgili uygulamaları çalıştırmak için kullanılan bir HashiCorp aracıdır. Nomad, makinelerin ve uygulamaların yerini soyutlar ve bunun yerine kullanıcıların sadece neyi çalıştırmak istediklerini bildirmelerini sağlar ve Nomad nerede çalıştırılacağını ve nasıl çalıştırılacağını yönetir.
+
 ## Kurulum
 
 Packer'ı kurulumu oldukça basittir. Packer'ı yüklemek için iki yaklaşım vardır:
