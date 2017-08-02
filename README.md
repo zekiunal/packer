@@ -210,7 +210,7 @@ Template validated successfully.
 
 Şimdi, bu şablondan imajını oluşturalım.
 
-Zeki bir okuyucu, Redis önceden kurulmuş bir imaj oluşturacağımızı ve buna rağmen yaptığımız şablonun herhangi bir yerinde Redis'e referans verilmediğini söyleyebilir. Aslında dokümantasyonun bu kısmı yalnızca ilk temel, hazırlıkları yapılmamış bir görüntü oluşturulmasını kapsar. Hazırlama konusunu ele alan bir sonraki bölümde Redis'in kurulumu ele alınacaktır.
+Zeki bir okuyucu, önceden Redis kurulmuş bir imaj oluşturacağımızı ve buna rağmen yaptığımız şablonun herhangi bir yerinde Redis'e referans verilmediğini söyleyebilir. Aslında dokümantasyonun bu kısmı yalnızca ilk temel, hazırlıkları yapılmamış bir görüntü oluşturulmasını kapsar. Hazırlama konusunu ele alan bir sonraki bölümde Redis'in kurulumu ele alınacaktır.
 
 ## Kurulum
 
