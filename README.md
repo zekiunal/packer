@@ -7,6 +7,69 @@
 
 Packer dünyasına hoşgeldiniz! Bu rehber Packer'ın ne olduğunu, sunduğu avantajları ve nasıl kullanmyaya başlayacağınızı açıklayacaktır. Packer'ı zaten biliyorsanız, belgeler bölümü mevcut tüm özellikler için daha fazla referans sağlar.
 
+## Packer nedir?
+
+Packer, tek bir kaynak yapılandırmasından çoklu platformlar için özdeş makine görüntüleri oluşturmak için kullanılan açık kaynaklı bir araçtır. Packer hafiftir, bilinen her işletim sisteminde çalışır ve çoklu platformlar için paralel olarak makine görüntüleri yaratarak oldukça performans gösterir. Packer, Chef veya Puppet gibi yapılandırma yönetiminin yerini tutmaz. Aslında, görüntüler oluştururken Packer, imaja yazılım yüklemek için Chef veya Puppet gibi araçları kullanabilir.
+
+Bir makine görüntüsü, önceden yapılandırılmış bir işletim sistemi ve yeni çalışan makinelerin hızlı bir şekilde oluşturulması için kullanılan yüklenmiş bir yazılım içeren tek bir statik birimdir. Makine görüntü formatları her platform için değişir. Örnek vermek gerekirse, EC2 için [AMI'ler](https://en.wikipedia.org/wiki/Amazon_Machine_Image), VMware için VMDK/VMX dosyaları, VirtualBox için OVF vb.
+
+## Neden Packer Kullanalım?
+
+Önceden hazırlanmış makine görüntüleri bir çok avantaja sahiptir, ancak çoğu zaman makina görüntülerinden yararlanmaktan kaçınırız, çünkü görüntüler yaratmak ve yönetmek çok sıkıcıdır. Daha önce Makine görüntülerinin oluşturulmasını otomatikleştirmek için varolan herhangi bir araç yoktu ya da öğrenme eğrisi çok yüksekti. Sonuç olarak, Packer'dan önce, makine imajlarının oluşturulması, operasyon ekiplerinin çevikliğini tehdit etti ve bu nedenle büyük faydalara rağmen makina görüntülerinin oluşturulması tercih edilmiyordu.
+
+Packer tüm bunları değiştirdi. Packer kullanımı kolaydır ve herhangi bir makine imajının yaratılmasını otomatikleştirir. Packer tarafından oluşturulan makina görüntülerine yazılım yüklemek ve yapılandırmak için Chef veya Puppet gibi bir çözümü kullanmaya teşvik ederek modern yapılandırma yönetimini benimser.
+
+Başka bir deyişle: Packer, modern çağa önceden hazırlanmış makina görüntülerini getirerek, kullanılmayan potansiyelin ve yeni fırsatların değerlendirmesini sağlar.
+
+## Paketleyiciyi Kullanmanın Avantajları
+   
+**Süper hızlı altyapı dağıtımı.** Packer tamamen hazır ve yapılandırılmış makina görüntülerini, birkaç dakika veya saat yerine saniyeler içinde başlatmanızı sağlar. Geliştirme amaçlı sanal makineleri saniyeler içinde piyasaya sürülebileceğinden, sadece yayına alma süreçleri için değil, geliştirme süreçleriniz için de faydalıdır.
+
+**Birden çok sağlayıcı için taşınabilirlik.** Packer, birden fazla platform için aynı görüntüleri oluşturduğundan, yayına alma süreciniz için AWS, test/kalite kontrolü için OpenStack gibi özel bir bulutt  ve geliştirme ortamınız için VMware veya VirtualBox gibi masaüstü sanallaştırma çözümlerini kullanabilirsiniz. Her ortam için, aynı taşınabilir görüntü üretildiğinden taşınabilirlik sağlanmış olur.
+
+**Geliştirilmiş kararlılık.** Packer, bir görüntüyü kurulurken, makineye tüm yazılımları yükler ve yapılandırır. Eğer komut dosyalarında hata varsa, makine açıldıktan birkaç dakika yerine daha erken aşamada hata yakalanabilir.
+
+**Daha fazla test edilebilirlik.** Bir makine görüntüsü oluşturulduktan sonra, bu makine görüntüsü, herşeyin yolunda olduğunu doğrulamak için hızlı bir şekilde başlatılabilir ve "Somoke Test" uygulayabilir. Böylece, bu görüntüye sahip diğer makinelerin düzgün şekilde çalıştığından emin olabilirsiniz.
+
+Packer, tüm bu avantajlardan faydalanmanın son derece kolay olmasını sağlar.
+
+Ne için bekliyorsun? Başlayalım!
+
+
+## Kullanım Örnekleri 
+
+Artık Packer'ın ne yaptığını ve görüntü yaratmanın faydalarının ne olduğunu biliyorsun. Bu bölümde, Packer için bazı kullanım durumlarını listeleyeceğiz. Bunun kapsamlı bir liste olmadığını unutmayın. Burada listelenmeyen birçok kullanım örneği var. Bu liste, Packer'ın işlemlerinizi nasıl geliştirebileceği hakkında size bir fikir vermek amacıyla verilmiştir.
+
+### Sürekli Dağıtım
+
+Packer hafif, taşınabilir ve komut satırı tabanlıdır. Chef/Puppet'e yapılan her değişiklikte birden fazla platform için yeni makine görüntüleri oluşturmak için kullanılabilir. Bu sebeple, sürekli dağıtım hattınızın merkezine koymanız için mükemmel bir araçtır. 
+
+Bu hattın bir parçası olarak, yeni oluşturulan görüntüler daha sonra başlatılacak, test edilecek ve altyapı değişikliklerinin çalışıp çalışmadığı doğrulanacaktır. Testler geçerliyse, görüntünün dağıtıldığında çalışacağından emin olabilirsiniz. Bu, altyapı değişiklikleri için yeni bir kararlılık ve test edilebilirlik seviyesine geçminizi sağlar.
+
+### Dev/Prod Denkliği
+
+Packer, geliştirme, test etme ve yayına alma ortamlarınızı olabildiğince benzer tutmaya yardımcı olur. Packer, aynı anda birden fazla platform için görüntü üretmek için kullanılabilir. Packer'ı kullanarak tek bir şablondan aynı anda bir AMI ve VMware makinesi üretebilirsiniz. Böylece yayına almak için AWS'yi ve gelişme için VMware'i (belki de Vagrant ile birlikte) için kullanabilirsiniz, 
+
+Bu yeteneği yukarıdaki sürekli dağıtımlı durumuyla eşleştirin ve geliştirme aşamasından, yayına almaya kadar tutarlı çalışma ortamları için oldukça esnek bir sisteme sahip olun.
+
+### Cihaz/Demo Oluşturma
+
+Packer, paralel olarak birden fazla platform için tutarlı görüntüler oluşturduğundan, cihazlar ve tek kullanımlık ürün demoları oluşturmak için mükemmeldir. Yazılımınız değiştikçe, otomatik olarak yazılımı önceden yüklenmiş  cihazlar oluşturabilirsiniz. Potansiyel kullanıcılar daha sonra istedikleri ortamda yazılımınızı kullanmaya başlayabilir.
+
+Yazılımı karmaşık gereksinimlerle birlikte paketlemek hiç bu kadar kolay olmamıştı.
+
+## Packer ve HashiCorp Ekosistemi
+
+HashiCorp, açık kaynak kodlu Vagrant, Packer, Terraform, Serf, Consul, Nomad ve ticari bir ürün olan Atlas'ın yaratıcısıdır. Packer, HashiCorp'un uygulama dağıtımını sürüme geçirilmiş, denetlenebilir, tekrarlanabilir ve işbirliğine dayalı bir süreç haline getirmek için inşa ettiği ekosistemin sadece bir parçasıdır. Modern veri merkezinin nitelikleri ve sorumlu uygulama sunumu ile ilgili inançlarımız hakkında daha fazla bilgi edinmek için Atlas Mindset: Altyapı Sürümü Kontrolü başlıklı makaleyi okuyun.
+
+Makine görüntüleri ve dağıtılabilir eserler oluşturmak için Packer kullanıyorsanız, muhtemelen bu eserler dağıtmak için bir çözüm bulmanız gerekir. Terraform, altyapıyı oluşturmak, birleştirmek ve değiştirmek için kullanılan bir araçtır.
+
+Aşağıda, HashiCorp'un açık kaynak projelerinin özetleri ve Atlas'ın tam bir uygulama dağıtım iş akışı oluşturmak için bunları nasıl bağladığını gösteren bir grafik bulunmaktadır.
+
+### HashiCorp Ekosistemi
+
+![Atlas](https://raw.githubusercontent.com/zekiunal/packer/master/atlas.png)
+
 ## Kurulum
 
 Packer'ı kurulumu oldukça basittir. Packer'ı yüklemek için iki yaklaşım vardır:
