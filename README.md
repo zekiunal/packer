@@ -20,7 +20,7 @@ Bir makine görüntüsü, önceden yapılandırılmış bir işletim sistemi ve 
 
 Packer tüm bunları değiştirdi. Packer kullanımı kolaydır ve herhangi bir makine imajının yaratılmasını otomatikleştirir. Packer tarafından oluşturulan makina görüntülerine yazılım yüklemek ve yapılandırmak için Chef veya Puppet gibi bir çözümü kullanmaya teşvik ederek modern yapılandırma yönetimini benimser.
 
-Başka bir deyişle: Packer, modern çağa önceden hazırlanmış makina görüntülerini getirerek, kullanılmayan potansiyelin ve yeni fırsatların değerlendirmesini sağlar.
+Başka bir deyişle: Packer, modern çağa önceden hazırlanmış makina görüntülerini getirerek, kullanılmayan potansiyelin ve yeni fırsatların değerlendirmesini sağladı.
 
 ### Paketleyiciyi Kullanmanın Avantajları
    
@@ -84,6 +84,114 @@ Aşağıda, HashiCorp'un açık kaynak projelerinin özetleri ve Atlas'ın tam b
 [Vagrant](https://www.vagrantup.com) yayına alınacak geliştirme ortamlarını yönetmek için kullanılan bir HashiCorp aracıdır. Vagrant, farklı ortamlar ile bir proje geliştirmenin zorluğunu azaltır ve yayın ortamında  beklenmedik davranış riskini azaltır. Geliştirme ve yayın ortamı arasındaki denkliğin korunması için Vagrant Packer'ın desteği ile yayın ortamı çıktılarını  paralel olarak kurabilir.
 
 [Nomad](https://www.nomadproject.io) bir grup makineyi yönetmek ve bu makineler ile ilgili uygulamaları çalıştırmak için kullanılan bir HashiCorp aracıdır. Nomad, makinelerin ve uygulamaların yerini soyutlar ve bunun yerine kullanıcıların sadece neyi çalıştırmak istediklerini bildirmelerini sağlar ve Nomad nerede çalıştırılacağını ve nasıl çalıştırılacağını yönetir.
+
+## Packer Kurulumu
+
+Packer'ı çalıştırmak istediğiniz makineye önce yüklemelisiniz. Kurulumu kolaylaştırmak için Packer, desteklenen tüm platformlar ve mimariler için bir [dosya](https://www.packer.io/downloads.html) olarak dağıtılır. Bu sayfada, Packer'ın kaynağından nasıl derleneceği açıklanmayacaktır; derleme hakkında, [README'den](https://github.com/hashicorp/packer/blob/master/README.md) faydalanabilirsiniz ancak yalnızca ileri düzey kullanıcılar için önerilir.
+
+### Packer'ı Yükleme
+
+Packer'ı kurmak için önce sisteminiz için uygun paketi bulun ve indirin. Packer bir `zip` dosyası olarak paketlenmiştir.
+
+Daha sonra indirilen paketi, Packer'ın kurulacağı bir dizinde açın. Unix sistemlerinde, yüklemeyi sadece kullanıcıyla sınırlamak isteyip istemediğinize veya sistem genelinde kurulum yapmak istemenize bağlı olarak `~/packer` veya `/usr/local/packer` hedefleri uygun olacaktır. Windows sistemlerinde, istediğiniz yere yerleştirebilirsiniz.
+
+Paketi açtıktan sonra, dizinde `packer` adlı tek bir dosya bulunmalıdır. Yüklemenin son adımı, Packer'ı kurduğunuz dizininin `PATH` ortam değişkeninde tanımlı olduğundan emin olmaktır. Linux ve Mac'te PATH ayarlama ile ilgili talimatlar için [bu sayfaya](https://stackoverflow.com/questions/14637979/how-to-permanently-set-path-on-linux) bakın. [Bu sayfada](https://stackoverflow.com/questions/1618280/where-can-i-set-path-to-make-exe-on-windows) da PATH'ı Windows'ta ayarlama yönergeleri bulunmaktadır.
+
+### Kurulumu Doğrulama
+
+Packer'ı yükledikten sonra, yeni bir terminal veya konsolu açarak yüklemenin çalıştığını doğrulayın ve `packer`'ı kontrol edin:
+
+```
+$ packer
+usage: packer [--version] [--help] <command> [<args>]
+
+Available commands are:
+    build       build image(s) from template
+    fix         fixes templates from old versions of packer
+    inspect     see components of a template
+    push        push template files to a Packer build service
+    validate    check that a template is valid
+    version     Prints the Packer version
+```
+
+`packer`'ın bulunamadığına yönelik bir hata mesajı alırsanız, PATH ortam değişkeniniz düzgün kurulmamış demektir. Lütfen geri dönün ve PATH değişkeninizin Packer'ın yüklü olduğu dizini içerdiğinden emin olun.
+
+Aksi takdirde, Packer kuruldu ve kullanmaya hazırsınız!
+
+### Alternatif Kurulum Yöntemleri
+
+`packer` dosyası kurulumun tek resmi yöntemi olmasına rağmen, alternatifler mevcuttur.
+
+#### Homebrew
+
+OS X ve [Homebrew](https://brew.sh/) kullanıyorsanız, Packer'ı aşağıdaki talimatlarla kurabilirsiniz:
+
+```
+$ brew install packer
+```
+
+#### Chocolatey
+
+Windows ve [Chocolatey](http://chocolatey.org/) kullanıyorsanız, Packer'ı aşağıdaki talimatlarla kurabilirsiniz:
+
+```
+choco install packer
+```
+
+### Sorun Giderme
+
+Bazı RedHat tabanlı Linux dağıtımlarında varsayılan olarak `packer` adlı başka bir araç daha yüklüdür. Bunu `which -a packer` komutu ile kontrol edebilirsiniz. Böyle bir hata alırsanız, bir isim çakışması olduğunu gösterir.
+
+```
+packer
+/usr/share/cracklib/pw_dict.pwd: Permission denied
+/usr/share/cracklib/pw_dict: Permission denied
+```
+
+Bunu düzeltmek için, `packer`'a , `packer.io` gibi farklı ad kullanan bir kısayol oluşturabilir veya istediğiniz `packer` dosyasının mutlak yolunu kullanabilirsiniz. (ör. `/usr/local/packer`)
+
+## Imaj Oluşturma
+
+Packer'ı kurulduktan sonra derinlere dalıp ve ilk imajımızı oluşturalım. İlk imajımız Redis kurulu bir [Amazon EC2 AMI](https://aws.amazon.com/ec2/) olacak. Bu sadece bir örnek. Packer, önceden yüklenmiş herhangi bir şeyle birçok platform için imaj oluşturabilir.
+
+AWS hesabınız yoksa şimdi [oluşturun.](https://aws.amazon.com/free/) İmajımızı oluşturmak için "t2.micro" örneğini kullanacağız; "t2.micro" örneği, AWS [ücretsiz kullanım sınırlarında](https://aws.amazon.com/free/) yer alıyor, bu da işlemlerimizin ücretsiz olacağı anlamına geliyor. Daha Zaten bir AWS hesabınız varsa, AWS sizden bir miktar para tahsil edilebilir, ancak bu örnek için birkaç sentten daha fazla olmamalıdır.
+
+> Not: AWS ücretsiz kullanım sınırları kapsamında yer alan bir hesap kullanmıyorsanız, bu örnekleri çalıştırmak için sizden ücret alınabilir. Ücret sadece birkaç sentten olmalıdır, ancak sonuçta daha fazla ücret ödemek durumunda kalırsanız, biz sorumluluk kabul etmiyoruz.
+
+Packer, AWS dışındaki [pek çok platform](https://www.packer.io/docs/builders/index.html) için imajlar oluşturabilir ancak AWS, bilgisayarınıza ek bir yazılım yüklemeye gerek duymaz ve [ücretsiz kullanım sınırları](https://aws.amazon.com/free/) çoğu insan için uygundur. Bu nedenle bu örnek için AWS'yi kullanmayı seçtik. Bir AWS hesabı kurmaktan rahatsızsanız, diğer platformlar için de geçerli olan temel ilkelerle birlikte denemekten çekinmeyin.
+
+### Şablon
+
+Yapılandırmayı tanımlamak için kullanılan yapılandırma dosyasına Packer terminolojisinde şablon (template) denir. Şablonun biçimi basit JSON'dur. JSON, insan ve makine tarafından düzenlemede en iyi dengeye sahiptir; hem elle yapılmış şablonların hem de makinenin ürettiği şablonların kolayca oluşturulmasına izin verir.
+
+Şablonun tamamını oluşturarak başlayacağız, ardından her bir bölümün üzerinde kısaca duracağız. example.json dosyası oluşturun ve aşağıdaki içeriği doldurun:
+
+```json
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": ""
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "us-east-1",
+    "source_ami_filter": {
+      "filters": {
+      "virtualization-type": "hvm",
+      "name": "*ubuntu-xenial-16.04-amd64-server-*",
+      "root-device-type": "ebs"
+      },
+      "owners": ["099720109477"],
+      "most_recent": true
+    },
+    "instance_type": "t2.micro",
+    "ssh_username": "ubuntu",
+    "ami_name": "packer-example {{timestamp}}"
+  }]
+}
+```
 
 ## Kurulum
 
