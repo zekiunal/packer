@@ -435,10 +435,10 @@ Gördüğünüz gibi Packer hem Amazon hem de DigitalOcean imajlarını paralel 
 
 Kurulumların sonunda, Packer yaratılmış imajları (bir AMI ve bir DigitalOcean anlık görüntüsü) listeler. Yaratılan her iki imajda da önceden Redis kurulmuş temel Ubuntu kurulumlarıdır.
 
-### Vagrant Kutuları
+### Vagrant Nesneleri (Box)
 Packer, bir kurucunun (AMI veya düz VMware görüntüsü gibi) çıktılarını alıp bir Vagrant Nesnesine (Vagrant Box) dönüştürme yeteneğine de sahiptir.
 
-Bu operasyon, [Ön tanımlı işlemler(post-processors)](https://www.packer.io/docs/templates/post-processors.html) kullanılarak yapılır. Bunlar, daha önce çalışan kurucunun (builder) veya Ön tanımlı işlemlerin (post-processors) oluşturduğu bir çıktıyı (artifact ) alır ve yeni bir çıktıya (artifact) dönüştürür. Vagrant `post-processor`, bir kurucudan bir çıktı alır ve bir Vagrant nesnesine dönüştürür.
+Bu operasyon, [Ön tanımlı işlemler(post-processors)](https://www.packer.io/docs/templates/post-processors.html) kullanılarak yapılır. Bunlar, daha önce çalışan kurucunun (builder) veya Ön tanımlı işlemlerin (post-processors) oluşturduğu bir çıktıyı (artifact) alır ve yeni bir çıktıya (artifact) dönüştürür. Vagrant `post-processor`, bir kurucudan bir çıktı alır ve bir Vagrant nesnesine dönüştürür.
 
 Ön tanımlı işlemler(post-processors) genellikle çok yararlı bir kavramdır. Ön tanımlı işlemlerin (post-processors) çok ilginç kullanım örnekleri vardır. Örneğin, imajı sıkıştırmak, yüklemek, test etmek vb. için bir ön tanımlı işlem (post-processor) yazabilirsiniz.
 
@@ -474,6 +474,88 @@ $ packer build -only=amazon-ebs example.json
 Ancak, Amazon EBS kurucusunun (builder) çıktısı nereye gitti? `post-processors` kullanırken, ara üretimler (artifacts) genellikle istenmedikleri için Vagrant tarafından kaldırılır. Sadece son çıktı (artifact) korunur. Elbette bu davranış değiştirilebilir. Bu davranışın nasıl kontrol edildiği bu [dokümantasyonda](https://www.packer.io/docs/templates/post-processors.html) açıklanmıştır.
 
 Ara çıktıyı (artifacts) kaldırılırken, çıktı (builder) alttaki dosyaları veya kaynakları da kaldırılır. Örneğin, bir VMware imajı oluştururken, bir Vagrant nesnesine çevirirseniz, VMware imajının dosyaları Vagrant nesnesine sıkıştırıldıklarından silinir. Bununla birlikte, AWS imajları oluşturmakla birlikte, AMI, Vagrant'ın çalışması için gerekli olduğundan saklanır.
+
+### Uzaktan Kurulumlar ve Depolama
+Rehberde buraya kadar, AWS ve DigitalOcean'da imajları kurmak ve hazırlamak için yerel makinenizde Packer çalıştırdık. Bunun yanında, Packer'ın uzaktan çalıştırılmasını sağlamak için Atlas'ı HashiCorp kullanabilir ve kurulumların çıktısını saklayabilirsiniz.
+
+#### Neden Uzaktan Kurulum?
+
+Uzaktan kurulum yaparsanız, erişim kimlik bilgilerini geliştirici ortamından çıkarabilir, yerel makineleri uzun süren Packer süreçlerinden kurtarabilir ve Packer kurulumlarını, `vagrant push`, sürüm kontrol sistemi veya CI aracı gibi tetikleyici araçlarla otomatik olarak başlatabilirsiniz.
+
+#### Packer'ı Uzaktan Çalıştırma
+
+Packer'ı uzaktan çalıştırmak için Packer şablonunda yapılması gereken iki değişiklik vardır. Birincisi Packer şablonunu Atlas'a gönderen pusher konfigürasyonunun eklenmesidir, böylece Packer'ı uzaktan çalıştırabilir. İkinci değişiklik de, yerel ortam yerine Atlas ortamından değişkenleri okumak için değişkenler bölümünü güncellemektir. Eğer şablonunuzda tanımlıysa, `post-processors` bölümünü şimdilik kaldırın.
+
+```json
+{
+  "variables": {
+    "aws_access_key": "{{env `aws_access_key`}}",
+    "aws_secret_key": "{{env `aws_secret_key`}}"
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "us-east-1",
+    "source_ami": "ami-9eaa1cf6",
+    "instance_type": "t2.micro",
+    "ssh_username": "ubuntu",
+    "ami_name": "packer-example {{timestamp}}"
+  }],
+  "provisioners": [{
+    "type": "shell",
+    "inline": [
+      "sleep 30",
+      "sudo apt-get update",
+      "sudo apt-get install -y redis-server"
+    ]
+  }],
+  "push": {
+    "name": "ATLAS_USERNAME/packer-tutorial"
+  }
+}
+```
+
+Atlas kullanıcı adı almak için [bir hesap oluşturun.](https://atlas.hashicorp.com/account/new?utm_source=oss&utm_medium=getting-started&utm_campaign=packer&_ga=2.220098398.658837797.1501750338-1968525260.1501750338) Bir hesabınızı oluşturduktan sonra, deneme hesabı alabilmek için, sales@hashicorp.com ile iletişime geçmeniz gerekecektir.
+
+Yukarıdaki yapılandırmada "ATLAS_USERNAME" yerine kullanıcı adınızı yazın. [https://atlas.hashicorp.com/settings/tokens](https://atlas.hashicorp.com/settings/tokens) adresine gidin ve bir Atlas erişim anahtarı oluşturun. Bu anahtarı bir ortam değişkeni olarak atayın : `ATLAS_TOKEN=YOURTOKENHERE`.
+
+Ardından, Atlas'a kurulumu göndermek için kurulumu otomatik olarak başlatan `packer push example.json` komutunu çalıştırın.
+
+Atlas ortamında ne `aws_access_key` ne de `aws_secret_key` tanımlanmadığından bu kurulum başarısız olacaktır. Atlas'da ortam değişkenlerini ayarlamak için [**Builds**](https://atlas.hashicorp.com/builds) sekmesine gidin, yeni oluşturulan "packer-tutorial" kurulum yapılandırmasını tıklatıp sol gezinme bölmesinde 'variables' bağlantısına tıklayın. `aws_access_key` ve `aws_secret_key`'yi kendi değerlerinizle ayarlayın. Şimdi, Packer kurulumunu Atlas ara yüzündeki 'rebuild' u tıklatarak veya `packer push example.json` komutunu yeniden çalıştırarak başlatın. Aktif kuruluma (active build) tıkladığınızda, işlem kayıtlarını gerçek zamanlı olarak görüntüleyebilirsiniz.
+
+> **Not:** Packer şablonunda bir değişiklik yapıldığında Atlas'da yapılandırmayı güncellemek için `packer push` komutunu çalıştırmalısınız.
+
+#### Packer Kurulumlarını Depolama
+
+Artık Atlas, önceden Redis yapılandırılmış bir AMI oluşturabiliyor. Bu harika, ancak AMI çıktısını saklamak ve sürümlemek daha da harikadır, böylece [Terraform](https://www.terraform.io/) gibi bir araç tarafından da kolayca konuşlandırılabilir. [Atlas `post-processor`](https://www.packer.io/docs/post-processors/atlas.html) bu işlemi daha kolay hale getirir:
+
+```
+{
+  "variables": ["..."],
+  "builders": ["..."],
+  "provisioners": ["..."],
+  "push": ["..."],
+  "post-processors": [{
+    "type": "atlas",
+    "artifact": "ATLAS_USERNAME/packer-tutorial",
+    "artifact_type": "amazon.image"
+  }]
+}
+```
+
+`post-processors` bloğunu Atlas kullanıcı adınızla güncelleyin, daha sonra `packer push example.json` komutunu çalıştırın ve kurulumun Atlas'da başladığını gözlemleyin! Kurulum tamamlandığında, ortaya çıkan çıktı (artifact ) Atlas'a kaydedilir ve saklanır.
+
+### Sonraki Adımlar
+
+Bu Packer için başlangıç kılavuzuydu. Şimdi, temel Packer kullanımıyla rahat hissediyor olmalısınız. Şablonları anlıyor, kurucuları, sağlayıcıları vb. bileşenleri tanımlayabiliyoruz. Bu noktada Packer'ı gerçek senaryolarda düşünmeye ve kullanmaya hazırsınız.
+
+Bu noktadan sonra sizin için en önemli referans [dokümantasyon](https://www.packer.io/docs/index.html) olacaktır. Dokümantasyon, Packer'ın tüm genel özelliklerine ve yeteneklerine ilişkin güçlü bir referans kaynağıdır.
+
+Packer'ın HashiCorp ekosistemi araçlarıyla nasıl çalıştığına ilişkin daha fazla bilgi edinmek istiyorsanız, [Atlas'a genel bir bakış](https://atlas.hashicorp.com/help/intro/getting-started) rehberini okuyun.
+
+Packer'ı kullanırken, lütfen yorumlarınızı ve kaygılarınızı [elektronik posta veya IRC](https://www.packer.io/community.html) kanalı ile paylaşın. Ayrıca Packer [açık kaynaktır](https://github.com/hashicorp/packer), isterseniz lütfen katkıda bulunun. Katkılara çok açığız.
+
 
 ## Kurulum
 
