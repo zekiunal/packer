@@ -637,7 +637,7 @@ Varsayılan olarak, Packer'ın çıktısı insan tarafından okunabilir nitelikt
 
 Makine tarafından okunabilen çıktı biçimi  awk/sed/grep/etc'dir. Bu özellik kolay ve yeni bir format öğrenmenizi gerektirmeden tanıdık bir kullanım sağlar.
 
-#### Makine Tarafından Okunabilir Çıktıyı Etkinleştirme
+##### Makine Tarafından Okunabilir Çıktıyı Etkinleştirme
 
 Makine tarafından okunabilen çıktı biçimi, `-machine-readable` parametresini herhangi bir Packer komutuna geçirerek etkinleştirilebilir. Bu, tüm çıktıların stdout'da makineden okunabilir olmasını sağlar. Günlüğe kaydetme etkinleştirilirse stderr'da görünmeye devam eder. Çıktının bir örneği aşağıda gösterilmiştir:
 
@@ -653,7 +653,7 @@ Bu konu daha sonra ayrıntılı olarak ele alınacaktır. Fakat gördüğünüz 
 
 > `-machine-readable` parametresi, otomatikleştirmeye yönelik tasarlanmıştır ve etkileşimli ortamlar için tasarlanmış `-debug` parametresi nin yetenekleri ile özelleştirilmiştir.
 
-#### Makine Tarafından Okunabilir Çıktı Biçimi
+##### Makine Tarafından Okunabilir Çıktı Biçimi
 
 Makine tarafından okunabilir format, satır yönelimli, virgülle sınırlandırılmış bir metin biçimidir. Bu, `Ruby` veya `Python` gibi  programlama dillerine ek olarak `awk` veya `grep` gibi standart Unix araçlarını kullanarak ayrıştırmanın daha kolay olmasını sağlar.
 
@@ -677,7 +677,7 @@ Within the format, if data contains a comma, it is replaced with %!(PACKER_COMMA
 
 Newlines within the format are replaced with their respective standard escape sequence. Newlines become a literal \n within the output. Carriage returns become a literal \r.
 
-#### Makine Tarafından Okunabilir Mesaj Türleri
+##### Makine Tarafından Okunabilir Mesaj Türleri
 
 Makine tarafından okunabilen mesaj türleri, [`machine-readable format`](https://www.packer.io/docs/commands/index.html#machine-readable-output) bölümünde bulunabilir. Bu bölüm, varsayılan olarak Packer çekirdeğiyle birlikte gönderilen tüm bileşenlerin yanı sıra Packer tarafından sunulan tüm ileti türleriyle ilgili belgeler içerir.
 
@@ -774,3 +774,25 @@ Errors validating build 'vmware'. 1 error(s) occurred:
 ##### Seçenekler
 
 * **-syntax-only** - Şablonun yalnızca sözdizimi kontrol edilir. Yapılandırma doğrulanmaz.
+
+### Şablonlar
+
+Şablonlar, bir veya daha fazla makine imajı oluşturmak için Packer'ın çeşitli bileşenlerini yapılandıran JSON dosyalarıdır. Şablonlar taşınabilir, statik, okunabilir ve hem insanlar hem de bilgisayarlar tarafından yazılabilir. Bu özellikle, yalnızca şablonları elle yaratmak ve değiştirmekle kalmaz, aynı zamanda şablonları dinamik olarak yaratmak veya değiştirmek için program yazmanın avantajına da sahip olmanızı sağlar.
+
+Şablonlar, şablonu alan ve içindeki kurulumları çalıştırarak makine imajlarını üreten `packer build` gibi komutlara verilir.
+
+#### Şablon Yapısı
+
+Bir şablon, Packer'ın çeşitli bileşenlerini yapılandıran bir dizi bölüm içeren bir JSON nesnesidir. Bir şablon içindeki mevcut bölümler aşağıda listelenmiştir. Her bölümün açıklaması ile birlikte, zorunlu olarak kullanılıp, kullanılmayacağı belirtilmiştir.
+
+* **builders** (gerekli), makine imajları oluşturmak için kullanılacak kurucuları tanımlayan bir veya daha fazla nesne dizisidir ve bu bölüm kurucuların her birini yapılandırır. Bir kurucuyu tanımlama ve yapılandırma hakkında daha fazla bilgi için [şablonda kurucuların yapılandırılmasına](https://www.packer.io/docs/templates/builders.html) ilişkin bölümü okuyun.
+
+* **description** (isteğe bağlı), şablonun ne yaptığının açıklanması sağlayan bölümdür. Bu çıktı yalnızca [`inspect`](https://github.com/zekiunal/packer/blob/master/README.md#inspect-komutu) komutunda kullanılır.
+
+* **min_packer_version** (isteğe bağlı), şablonun kullanılması için gereken minimum hangi `packer` sürümüne sahip olması gerektiğini tanımlayan bölümdür. Bu, şablonla birlikte Packer'ın doğru sürümlerinin kullanılmasını sağlamak için kullanılabilir. Packer, `packer fix` ile geriye dönük uyumluluğu koruduğu için, maksimum bir sürüm belirtilemez.
+
+* **post-processors** (isteğe bağlı), oluşturulan imajlarla ilgili çeşitli ön tanımlı işleri tanımlayan bir veya daha fazla nesneden oluşan bir dizidir. Belirtilmemişse, hiçbir ön tanımlı iş yapılmayacaktır. Ön tanımlı işlemlerin yaptıkları ve nasıl tanımlandıkları hakkında daha fazla bilgi için [şablonlarda post-işlemcileri yapılandırma](https://www.packer.io/docs/templates/post-processors.html) bölümünü okuyun.
+
+* **provisioners** (isteğe bağlı), kurucular tarfından oluşturulan makineler için yazılım yüklemek ve yapılandırmak için kullanılacak olan hazırlayıcıları tanımlayan bir veya daha fazla nesne dizisidir. Belirtilmezse, hiçbir hazırlayıcı çalıştırılmaz. Bir hazırlayıcı tanımlama ve yapılandırma hakkında daha fazla bilgi için, [şablonlarda hazırlayıcı yapılandırma](https://www.packer.io/docs/templates/provisioners.html) bölümünü okuyun.
+
+* **variables** (isteğe bağlı), şablonda bulunan kullanıcı değişkenlerini tanımlayan bir veya daha fazla anahtar/değer dizesinin bir nesnesidir. Belirtilmemişse, hiçbir değişken tanımlanmaz. Kullanıcı değişkenlerini tanımlama ve kullanma hakkında daha fazla bilgi için, [şablonlardaki kullanıcı değişkenleri](https://www.packer.io/docs/templates/user-variables.html) bölümünü okuyun.
