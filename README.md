@@ -156,7 +156,7 @@ Packer'ı kurulduktan sonra derinlere dalıp ve ilk imajımızı oluşturalım. 
 
 AWS hesabınız yoksa şimdi [oluşturun.](https://aws.amazon.com/free/) İmajımızı oluşturmak için "t2.micro" örneğini kullanacağız; "t2.micro" örneği, AWS [ücretsiz kullanım sınırlarında](https://aws.amazon.com/free/) yer alıyor, bu da işlemlerimizin ücretsiz olacağı anlamına geliyor. Daha Zaten bir AWS hesabınız varsa, AWS sizden bir miktar para tahsil edilebilir, ancak bu örnek için birkaç sentten daha fazla olmamalıdır.
 
-> Not: AWS ücretsiz kullanım sınırları kapsamında yer alan bir hesap kullanmıyorsanız, bu örnekleri çalıştırmak için sizden ücret alınabilir. Ücret sadece birkaç sentten olmalıdır, ancak sonuçta daha fazla ücret ödemek durumunda kalırsanız, biz sorumluluk kabul etmiyoruz.
+> **Not:** AWS ücretsiz kullanım sınırları kapsamında yer alan bir hesap kullanmıyorsanız, bu örnekleri çalıştırmak için sizden ücret alınabilir. Ücret sadece birkaç sentten olmalıdır, ancak sonuçta daha fazla ücret ödemek durumunda kalırsanız, biz sorumluluk kabul etmiyoruz.
 
 Packer, AWS dışındaki [pek çok platform](https://www.packer.io/docs/builders/index.html) için imajlar oluşturabilir ancak AWS, bilgisayarınıza ek bir yazılım yüklemeye gerek duymaz ve [ücretsiz kullanım sınırları](https://aws.amazon.com/free/) çoğu insan için uygundur. Bu nedenle bu örnek için AWS'yi kullanmayı seçtik. Bir AWS hesabı kurmaktan rahatsızsanız, diğer platformlar için de geçerli olan temel ilkelerle birlikte denemekten çekinmeyin.
 
@@ -217,9 +217,9 @@ Zeki bir okuyucu, önceden Redis kurulmuş bir imaj oluşturacağımızı ve bun
 
 Doğrulanmış bir şablonla, ilk imajınızı oluşturmanın zamanı geldi. Bu işlem, `packer build` ile bir şablon dosyasını çağırarak yapılır. Çıktı aşağıda göründüğü gibi olmalıdır. Bu işlemin genellikle birkaç dakika sürdüğünü unutmayın.
 
-> Note: Deneme yanılma için, komut satırından kimlik bilgilerini kullanmak daha uygundur. Ancak, potansiyel olarak güvensizdir. Amazon kimlik bilgilerini tanımlamanın diğer yolları için [belgelerimize](https://www.packer.io/docs/builders/amazon.html#specifying-amazon-credentials) bakın.
+> **Not:** Deneme yanılma için, komut satırından kimlik bilgilerini kullanmak daha uygundur. Ancak, potansiyel olarak güvensizdir. Amazon kimlik bilgilerini tanımlamanın diğer yolları için [belgelerimize](https://www.packer.io/docs/builders/amazon.html#specifying-amazon-credentials) bakın.
 
-> Not: Windows'ta `packer`'ı kullanırken, aşağıdaki tek tırnakları çift tırnak işaretiyle değiştirin.
+> **Not:** Windows'ta `packer`'ı kullanırken, aşağıdaki tek tırnakları çift tırnak işaretiyle değiştirin.
 
 ```
 $ packer build \
@@ -254,9 +254,9 @@ us-east-1: ami-19601070
 
 Bu AMI kullanıma hazırdır. İsterseniz gidip bu AMI'yi hemen başlatabilir.
 
-> Not: AMI kimliğiniz mutlaka yukarıda belirtilenlerden farklı olacaktır. Yukarıdaki örnek çıktıdaki gibi bir başlatmayı denerseniz, bir hata mesajı alırsınız. AMI'nızı başlatmayı denemek isterseniz, AMI kimliğinizi Packer çıktısından alın.
+> **Not:** AMI kimliğiniz mutlaka yukarıda belirtilenlerden farklı olacaktır. Yukarıdaki örnek çıktıdaki gibi bir başlatmayı denerseniz, bir hata mesajı alırsınız. AMI'nızı başlatmayı denemek isterseniz, AMI kimliğinizi Packer çıktısından alın.
 
-> Note: If you see a VPCResourceNotSpecified error, Packer might not be able to determine the default VPC, which the t2 instance types require. This can happen if you created your AWS account before 2013-12-04. You can either change the instance_type to m3.medium, or specify a VPC. Please see http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/default-vpc.html for more information. If you specify a vpc_id, you will also need to set subnet_id. Unless you modify your subnet's IPv4 public addressing attribute, you will also need to set associate_public_ip_address to true, or set up a VPN.
+> **Not:** If you see a VPCResourceNotSpecified error, Packer might not be able to determine the default VPC, which the t2 instance types require. This can happen if you created your AWS account before 2013-12-04. You can either change the instance_type to m3.medium, or specify a VPC. Please see http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/default-vpc.html for more information. If you specify a vpc_id, you will also need to set subnet_id. Unless you modify your subnet's IPv4 public addressing attribute, you will also need to set associate_public_ip_address to true, or set up a VPN.
 
 ### Imajı Yönetme
 
