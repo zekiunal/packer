@@ -101,7 +101,7 @@ Paketi açtıktan sonra, dizinde `packer` adlı tek bir dosya bulunmalıdır. Y�
 
 Packer'ı yükledikten sonra, yeni bir terminal veya konsolu açarak yüklemenin çalıştığını doğrulayın ve `packer`'ı kontrol edin:
 
-```
+```bash
 $ packer
 usage: packer [--version] [--help] <command> [<args>]
 
@@ -126,7 +126,7 @@ Aksi takdirde, Packer kuruldu ve kullanmaya hazırsınız!
 
 OS X ve [Homebrew](https://brew.sh/) kullanıyorsanız, Packer'ı aşağıdaki talimatlarla kurabilirsiniz:
 
-```
+```bash
 $ brew install packer
 ```
 
@@ -134,7 +134,7 @@ $ brew install packer
 
 Windows ve [Chocolatey](http://chocolatey.org/) kullanıyorsanız, Packer'ı aşağıdaki talimatlarla kurabilirsiniz:
 
-```
+```bash
 choco install packer
 ```
 
@@ -142,7 +142,7 @@ choco install packer
 
 Bazı RedHat tabanlı Linux dağıtımlarında varsayılan olarak `packer` adlı başka bir araç daha yüklüdür. Bunu `which -a packer` komutu ile kontrol edebilirsiniz. Böyle bir hata alırsanız, bir isim çakışması olduğunu gösterir.
 
-```
+```bash
 packer
 /usr/share/cracklib/pw_dict.pwd: Permission denied
 /usr/share/cracklib/pw_dict: Permission denied
@@ -203,7 +203,7 @@ Nesne içindeki ek tanımlar, erişim sağlayıcı bilgileri, kullanılacak kayn
 
 Bu şablonu kullanmadan ve bir imaj oluşturmadan önce, `packer validate example.json` komutunu çalıştırarak şablonu doğrulalım. Bu komut, doğrulama yapmak için sözdizimini ve yapılandırma değerlerini kontrol eder. Şablonun geçerli olması gerektiği için çıkış aşağıdaki gibi görünmelidir. Herhangi bir hata varsa, bu komut size hatayı bildirecektir.
 
-```
+```bash
 $ packer validate example.json
 Template validated successfully.
 ```
@@ -221,7 +221,7 @@ Doğrulanmış bir şablonla, ilk imajınızı oluşturmanın zamanı geldi. Bu 
 
 > **Not:** Windows'ta `packer`'ı kullanırken, aşağıdaki tek tırnakları çift tırnak işaretiyle değiştirin.
 
-```
+```bash
 $ packer build \
     -var 'aws_access_key=YOUR ACCESS KEY' \
     -var 'aws_secret_key=YOUR SECRET KEY' \
@@ -265,6 +265,134 @@ Packer yalnızca imajlar oluşturur. Onları herhangi bir şekilde yönetmeye ç
 Yukarıdaki örneği çalıştırdıktan sonra, AWS hesabınızda bu kurulumla ilişkili bir AMI olacaktır. AMI'ler S3 tarafından Amazon tarafından saklanır, bu nedenle aylık 0.01 Dolar tutarında ücretlendirilmek istemiyorsanız, muhtemelen kaldırmak isteyeceksinizdir. AMI'yi önce [AWS AMI yönetim](https://console.aws.amazon.com/ec2/home?region=us-east-1#s=Images) sayfasından kaydını silerek kaldırın. Sonra, [AWS anlık görüntü yönetim](https://console.aws.amazon.com/ec2/home?region=us-east-1#s=Snapshots) sayfasındaki ilişkili anlık görüntüsünü (snapshot) silin.
 
 Tebrik ederiz! İlk imajınızı Packer ile oluşturdunuz. Bu imaj tamamen yararsız da olsa, bu sayfada Packer'ın nasıl çalıştığını, şablonları, şablonların nasıl doğrulanacağı ve oluşturulacağı hakkında genel bir fikir edindiniz.
+
+### Hazılık (Provision)
+Bu kılavuzun önceki sayfasında, ilk imajımızı Packer ile oluşturdunuz. Ancak, henüz oluşturduğunuz imaj, temel olarak daha önce var olan bir temel AMI'yi yeniden oluşturuyordu. Packer'ın gerçek amacı, yazılımları imajlara da yükleyip yapılandırmaktır. Bu aşama, hazırlık (provision) adımı olarak da bilinir. Packer, makineleri otomatik olarak imajlara dönüştürmeden önce otomatik hazırlamayı (provision) destekler.
+
+Bu bölümde imajımızı Redis'i kurarak tamamlayacağız. Böylelikle, yarattığımız imaj aslında Redis'i önceden yüklenmiş olacak. Redis küçük, basit bir örnek olsa da, bu, imaja daha fazla paket yüklemenin nasıl bir şey olacağı hakkında fikir verecektir.
+
+Tarihsel olarak, önceden oluşturulmuş görüntüler zorluydu, çünkü onları değiştirmek çok sıkıcı ve yavaştı. Hazırlama (Provision) da dahil olmak üzere Packer tamamen otomatik olduğundan, imajlar hızlı bir şekilde değiştirilebilir ve Chef, Puppet gibi modern yapılandırma yönetimi araçlarıyla entegre edilebilir.
+
+### Hazılıkları Yapılandırma
+
+Hazırlayıcılar (Provisions), şablonun bir parçasıdır. Redis'i yüklemek için Packer ile birlikte gelen yerleşik kabuk (shell) sağlayıcıyı kullanacağız. Daha önce yapmış olduğumuz `example.json` şablonunu değiştirin ve aşağıdakileri ekleyin. Yeni yapılandırmanın çeşitli bölümlerini aşağıdaki kod bloğundan sonra açıklayacağız.
+
+```json
+{
+  "variables": ["..."],
+  "builders": ["..."],
+
+  "provisioners": [{
+    "type": "shell",
+    "inline": [
+      "sleep 30",
+      "sudo apt-get update",
+      "sudo apt-get install -y redis-server"
+    ]
+  }]
+}
+```
+
+> **Not:** Yukarıdaki örnekte `sleep 30` çok önemlidir. Packer, SSH kullanılabilir olduğu anda makinayı algılayabilir ve makinaya SSH'ye bağlayabilir. Aslında Ubuntu'nun hazırlanması yeteri miktar zaman almaz. Bu bekletme  işlemi, işletim sisteminin doğru şekilde başlatıldığından emin olur.
+
+Umarım herşey net, ancak kurucular bölümünde aslında "..." bulunmamalıdır, başlangıç ​​kılavuzunun önceki sayfasındaki içerik ayarları olmalıdır. Ayrıca, önceki derste mevcut olmayan `builders` dan sonraki virgülü `[...]` bölümüne de dikkat edin.
+
+Hazırlayıcıları (Provisions) yapılandırmak için, kurucular (builders) yapılandırmasıyla birlikte şablona yeni bir bölüm olan `provisioners`'ı ekledik. `provisioners` bölümünde, çalıştırılacak hazırlıkların dizisi vardır. Birden fazla hazırlık belirlenirse, verilen sıraya göre çalıştırılırlar.
+
+Varsayılan olarak, hazırlıklar tanımlanan her kurucu (builder) için çalıştırılır. Şablonumuzda hem Amazon hem de DigitalOcean gibi iki kurucu tanımlanmış olsaydık, kabuk betiği (shell script) her iki kurulumun bir parçası olarak çalışırdı. Hazırları belirli kurucularla kısıtlamanın yolları da vardır, ancak başlangıç ​​kılavuzunun kapsamı dışındadır. [Dokümantasyonun](https://www.packer.io/docs/index.html) tamamında daha ayrıntılı bir şekilde ele alınmıştır.
+
+Tanımladığımız hazırlayıcı `shell` tipindedir. Bu hazırlayıcı Packer ile birlikte gelir ve çalışan makinede kabuk komut (shell scripts) dosyalarını çalıştırır. Bizim örneğimizde, Redis'i kurmak için çalıştırılacak iki satır  komut yazdık.
+
+### Kurulum (Build)
+
+Hazırlayıcı yapılandırıldıktan sonra, her şeyin yolunda olduğunu doğrulamak için `packer validate` ile bir kez daha kontrol edin, sonra `packer build example.json` ile kurulumu gerçekleştirin. Ekran çıktısı, ilk görüntünüzü oluşturduğunuz gibi görünmelidir; ek olarak, hazırlık işleminin gerçekleştirileceği yeni bir adım daha olacaktır.
+
+Çıktı, kabuk komut dosyalarının tüm çıktılarını içerdiğinden, bu kılavuzda yer alması çok detaya kaçacaktır. Sonuç olarak Redis'in başarıyla yüklendiğini görmeniz gerekir. Bundan sonra, Packer makineyi tekrar bir AMI'ye çevirir.
+
+Bu AMI'yi başlatacak olursanız, Redis'in önceden yüklenmiş olduğunu göreceksiniz. Etkileyici!
+
+Bu sadece temel bir örnektir. Gerçek bir dünyada kullanım örneğinde, uygulamanızı çalıştırmak için gerekli olan tüm bileşenleri içeren bir imaj hazırlıyor olabilirsiniz. Belki yalnızca bir web ortamı, böylece önceden oluşturulmuş web sunucuları için bir imaj oluşturabilirsiniz. Her şey önceden kurulduğundan, bu görüntüleri başlattığınızda tonlarca tasarruf sağlamış olacaksınız. Ek olarak, her şey önceden yüklendiğinden, imajları oldukları gibi test edebilir ve yayına alındığında herşeyin çalışır durumda olacağını bilebilirsiniz.
+
+### Paralel Kurulumlar
+
+Şu ana kadar, Packer'ın bir imajı nasıl otomatik olarak oluşturacağını gösterdik. Bu özellik kendi başına zaten oldukça güçlüdür. Fakat Packer bundan daha iyisini yapabilir. Packer, tek bir şablondan yapılandırılmış, paralel olarak birden çok platform için birden fazla imaj oluşturabilir.
+
+Bu, Packer'ın çok kullanışlı ve önemli bir özelliğidir. Örnek olarak, Packer, aynı komutlarla sağlanan bir AMI ve bir VMware sanal makinesini paralel olarak hazırlayabilir; sonuç olarak neredeyse aynı imajlar elde edebilir. AMI yayına alma süreçleri için kullanılabilir, VMware makineside geliştirme ortamı için kullanılabilir. Veya başka bir örnek, eğer [yazılım çalışma ortamları](https://en.wikipedia.org/wiki/Software_appliance) (cihazlar) oluşturmak için Packer kullanıyorsanız, her desteklenen platform için tek bir şablondan paralel olarak oluşturabilirsiniz.
+
+Bu özellikten yararlanmaya başladıktan sonra, olasılıklar önünüzde açılmaya başlar.
+
+Bu başlangıç ​​kılavuzundaki örneğe devam edersek, AMI gibi bir DigitalOcean görüntüsü de oluşturacağız. Her ikisi de neredeyse aynı olacak: İskeleti önceden Redis  kurulmuş olan Ubuntu OS. Bununla birlikte, her iki platform için de kurulum yapacağımızdan, AMI'yi veya [DigitalOcean'un](https://www.digitalocean.com/) imajını kullanmak isteyip istemediğinize karar vereceğiz. Ya da her ikisini de kullanabiliriz.
+
+#### DigitalOcean'u Kurma
+     
+[DigitalOcean](https://www.digitalocean.com/) nispeten yeni ama çok popüler olan bir VPS sağlayıcısıdır. Yüksek performanslı, düşük maliyetli VPS sunucularının kaliteli bir sunumuna sahiptir. Bu örnek için bir DigitalOcean anlık görüntüsünü (snapshot) oluşturacağız.
+
+Bunu yapmak için, DigitalOcean ile bir hesaba ihtiyacınız olacak. [Şimdi DigitalOcean'da bir hesap açın.](https://www.digitalocean.com/) Kaydolmak ücretsizdir. "**Droplets**" (sunucular) saatlik ücretlendirildiğinden, Packer ile oluşturduğunuz her resim için sizden 0,01 $ ücret alınır. Bu hoşuna gitmediyse, sadece rehberi okuman da yeterlidir.
+
+> **Uyarı!** "Droplets" çalıştığı için Packer ile yaratılan resim başına DigitalOcean tarafından 0.01 Dolar ücretlendirilirsiniz.
+
+Bir hesaba kaydolduğunuzda, [DigitalOcean API erişim sayfasından](https://cloud.digitalocean.com/settings/applications) API erişim anahtarınızı alın. Bu anahtarı bir yere kaydedin; Birazdan onlara ihtiyacınız olacak.
+
+#### Şablonun Değiştirilmesi
+
+Şimdi, DigitalOcean'ı eklemek için şablonu değiştirmeliyiz. Kullandığımız şablonu değiştirin ve `builders` dizisine aşağıdaki JSON nesnesini ekleyin.
+
+```json
+{
+  "type": "digitalocean",
+  "api_token": "{{user `do_api_token`}}",
+  "image": "ubuntu-14-04-x64",
+  "region": "nyc3",
+  "size": "512mb",
+  "ssh_username": "root"
+}
+```
+
+Ayrıca, DigitalOcean için erişim anahtarlarını eklemek için şablonun değişkenler bölümünü de değiştirmeniz gerekir.
+
+```json
+"variables": {
+  "do_api_token": "",
+  // ...
+}
+```
+
+Şablonun tamamı şu şekilde görünmelidir:
+
+```json
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": "",
+    "do_api_token": ""
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "region": "us-east-1",
+    "source_ami": "ami-fce3c696",
+    "instance_type": "t2.micro",
+    "ssh_username": "ubuntu",
+    "ami_name": "packer-example {{timestamp}}"
+  },{
+    "type": "digitalocean",
+    "api_token": "{{user `do_api_token`}}",
+    "image": "ubuntu-14-04-x64",
+    "region": "nyc3",
+    "size": "512mb",
+    "ssh_username": "root"
+  }],
+  "provisioners": [{
+    "type": "shell",
+    "inline": [
+      "sleep 30",
+      "sudo apt-get update",
+      "sudo apt-get install -y redis-server"
+    ]
+  }]
+}
+```
 
 ## Kurulum
 
