@@ -394,6 +394,47 @@ Ayrıca, DigitalOcean için erişim anahtarlarını eklemek için şablonun değ
 }
 ```
 
+Ek kurucular (builders) basitçe şablondaki `builders` dizisine eklenir. Bu, Packer'a birden fazla imaj oluşturmasını söyler. Kurucuların tiplerinin farklı olması gerekmez! Aslında, birden fazla AMI oluşturmak istiyorsanız, her kurulum için benzersiz bir ad berlirtmeniz yeterlidir.
+
+`packer validate` ile şablonu doğrulayın. Bu her zaman faydalı bir yöntemdir.
+
+> **Not:** Daha fazla DigitalOcean yapılandırma seçeneği arıyorsanız, [DigitalOcean Builder](https://www.packer.io/docs/builders/digitalocean.html) sayfasında bulabilirsiniz. Belgeler, mevcut yapılandırma seçeneklerinin  listesini içeren bir kılavuzudur.
+
+#### Kurulum
+
+Şimdi `packer build` komutunu kullanıcı değişkenlerinizle çalıştırın. Bir kısmı aşağıda listenilenen çıktı çok ayrıntılı olacaktır. Satırların sıralaması ve bazı ifadelerin farklı olabileceğini, ancak sonucun aynı olduğunu unutmayın.
+
+```bash
+$ packer build \
+    -var 'aws_access_key=YOUR ACCESS KEY' \
+    -var 'aws_secret_key=YOUR SECRET KEY' \
+    -var 'do_api_token=YOUR API TOKEN' \
+    example.json
+==> amazon-ebs: amazon-ebs output will be in this color.
+==> digitalocean: digitalocean output will be in this color.
+
+==> digitalocean: Creating temporary ssh key for droplet...
+==> amazon-ebs: Creating temporary keypair for this instance...
+==> amazon-ebs: Creating temporary security group for this instance...
+==> digitalocean: Creating droplet...
+==> amazon-ebs: Authorizing SSH access on the temporary security group...
+==> amazon-ebs: Launching a source AWS instance...
+==> digitalocean: Waiting for droplet to become active...
+==> amazon-ebs: Waiting for instance to become ready...
+==> digitalocean: Connecting to the droplet via SSH...
+==> amazon-ebs: Connecting to the instance via SSH...
+...
+==> Builds finished. The artifacts of successful builds are:
+--> amazon-ebs: AMIs were created:
+
+us-east-1: ami-376d1d5e
+--> digitalocean: A snapshot was created: packer-1371870364
+```
+
+Gördüğünüz gibi Packer hem Amazon hem de DigitalOcean imajlarını paralel olarak oluşturuyor. Her biri farklı renklerle bazı bilgiler verir (yukarıdaki blokta göremediğiniz halde), böylece komutu çalıştırdığınızda gerçekleştirilen eylemlerin tanımlanması daha kolaydır.
+
+Kurulumların sonunda, Packer yaratılmış imajları (bir AMI ve bir DigitalOcean anlık görüntüsü) listeler. Yaratılan her iki imajda da önceden Redis kurulmuş temel Ubuntu kurulumlarıdır.
+
 ## Kurulum
 
 Packer'ı kurulumu oldukça basittir. Packer'ı yüklemek için iki yaklaşım vardır:
