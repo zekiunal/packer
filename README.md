@@ -631,13 +631,13 @@ Packer, komut satırı arabirimi kullanılarak kontrol edilir. Packer ile olan t
 
 Komut satırında bulunan belgelere ek olarak, her komut bu web sitesinde belgelenmiştir. Soldaki gezinmeyi kullanarak belirli bir alt komut belgelerini bulabilirsiniz.
 
-#### Makine tarafından okunabilir çıktı
+#### Makine Tarafından Okunabilir Çıktı
 
 Varsayılan olarak, Packer'ın çıktısı insan tarafından okunabilir niteliktedir. Packer'ı kullanmaktan zevk duymak için güzel biçimlendirme, boşluk ve renkler kullanıyor. Bununla birlikte, Packer otomasyon düşünülerek oluşturulmuştur. Bu amaçla, Packer, Packer'ı otomatik ortamlarda kullanmanıza izin veren, tam olarak makine tarafından okunabilen bir çıktı ayarını destekler.
 
 Makine tarafından okunabilen çıktı biçimi  awk/sed/grep/etc'dir. Bu özellik kolay ve yeni bir format öğrenmenizi gerektirmeden tanıdık bir kullanım sağlar.
 
-#### Makine tarafından okunabilir çıktıyı etkinleştirme
+#### Makine Tarafından Okunabilir Çıktıyı Etkinleştirme
 
 Makine tarafından okunabilen çıktı biçimi, `-machine-readable` parametresini herhangi bir Packer komutuna geçirerek etkinleştirilebilir. Bu, tüm çıktıların stdout'da makineden okunabilir olmasını sağlar. Günlüğe kaydetme etkinleştirilirse stderr'da görünmeye devam eder. Çıktının bir örneği aşağıda gösterilmiştir:
 
@@ -653,7 +653,7 @@ Bu konu daha sonra ayrıntılı olarak ele alınacaktır. Fakat gördüğünüz 
 
 > `-machine-readable` parametresi, otomatikleştirmeye yönelik tasarlanmıştır ve etkileşimli ortamlar için tasarlanmış `-debug` parametresi nin yetenekleri ile özelleştirilmiştir.
 
-#### Makine tarafından okunabilir çıktı biçimi
+#### Makine Tarafından Okunabilir Çıktı Biçimi
 
 Makine tarafından okunabilir format, satır yönelimli, virgülle sınırlandırılmış bir metin biçimidir. Bu, `Ruby` veya `Python` gibi  programlama dillerine ek olarak `awk` veya `grep` gibi standart Unix araçlarını kullanarak ayrıştırmanın daha kolay olmasını sağlar.
 
@@ -679,7 +679,7 @@ Newlines within the format are replaced with their respective standard escape se
 
 #### Makine Tarafından Okunabilir Mesaj Türleri
 
-Makine tarafından okunabilen mesaj türleri, `machine-readable format` dokümantasyon bölümünde bulunabilir. Bu bölüm, varsayılan olarak Packer çekirdeğiyle birlikte gönderilen tüm bileşenlerin yanı sıra Packer tarafından sunulan tüm ileti türleriyle ilgili belgeler içerir.
+Makine tarafından okunabilen mesaj türleri, [`machine-readable format`](https://www.packer.io/docs/commands/index.html#machine-readable-output) bölümünde bulunabilir. Bu bölüm, varsayılan olarak Packer çekirdeğiyle birlikte gönderilen tüm bileşenlerin yanı sıra Packer tarafından sunulan tüm ileti türleriyle ilgili belgeler içerir.
 
 #### `build` Komutu
 
