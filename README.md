@@ -566,9 +566,9 @@ Packer dökümantasyonuna hoş geldiniz! Bu dökümantasyon Packer'daki tüm mev
 
 Packer'ı kurulumu oldukça basittir. Packer'ı yüklemek için iki yaklaşım vardır:
 
-* Derlenmiş bir [dosya](https://www.packer.io/docs/install/index.html#precompiled-binaries) kullanma
+* Derlenmiş bir [dosya](https://github.com/zekiunal/packer/blob/master/README.md#derlenmiş-bir-dosya-kullanma) kullanma
 
-* Kaynaktan [derleme](https://www.packer.io/docs/install/index.html#compiling-from-source)
+* Kaynaktan [derleme](https://github.com/zekiunal/packer/blob/master/README.md#kaynaktan-derleme)
 
 Hazır derlenmiş bir dosyayı indirmek en kolay yoldur. We provide downloads over TLS along with SHA256 sums to verify the binary. We also distribute a PGP signature with the SHA256 sums that can be verified.
 
