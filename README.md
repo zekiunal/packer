@@ -210,7 +210,61 @@ Template validated successfully.
 
 Şimdi, bu şablondan imajını oluşturalım.
 
-Zeki bir okuyucu, önceden Redis kurulmuş bir imaj oluşturacağımızı ve buna rağmen yaptığımız şablonun herhangi bir yerinde Redis'e referans verilmediğini söyleyebilir. Aslında dokümantasyonun bu kısmı yalnızca ilk temel, hazırlıkları yapılmamış bir görüntü oluşturulmasını kapsar. Hazırlama konusunu ele alan bir sonraki bölümde Redis'in kurulumu ele alınacaktır.
+Zeki bir okuyucu, önceden Redis kurulmuş bir imaj oluşturacağımızı ve buna rağmen yaptığımız şablonun herhangi bir yerinde Redis'e referans verilmediğini söyleyebilir. Aslında dokümantasyonun bu kısmı yalnızca ilk temel, hazırlıkları yapılmamış bir imaj oluşturulmasını kapsamaktadır. Hazırlık konusunu ele alan bir sonraki bölümde Redis'in kurulumuna değinilecektir.
+
+
+### İlk İmaj
+
+Doğrulanmış bir şablonla, ilk imajınızı oluşturmanın zamanı geldi. Bu işlem, `packer build` ile bir şablon dosyasını çağırarak yapılır. Çıktı aşağıda göründüğü gibi olmalıdır. Bu işlemin genellikle birkaç dakika sürdüğünü unutmayın.
+
+> Note: Deneme yanılma için, komut satırından kimlik bilgilerini kullanmak daha uygundur. Ancak, potansiyel olarak güvensizdir. Amazon kimlik bilgilerini tanımlamanın diğer yolları için [belgelerimize](https://www.packer.io/docs/builders/amazon.html#specifying-amazon-credentials) bakın.
+
+> Not: Windows'ta `packer`'ı kullanırken, aşağıdaki tek tırnakları çift tırnak işaretiyle değiştirin.
+
+```
+$ packer build \
+    -var 'aws_access_key=YOUR ACCESS KEY' \
+    -var 'aws_secret_key=YOUR SECRET KEY' \
+    example.json
+==> amazon-ebs: amazon-ebs output will be in this color.
+
+==> amazon-ebs: Creating temporary keypair for this instance...
+==> amazon-ebs: Creating temporary security group for this instance...
+==> amazon-ebs: Authorizing SSH access on the temporary security group...
+==> amazon-ebs: Launching a source AWS instance...
+==> amazon-ebs: Waiting for instance to become ready...
+==> amazon-ebs: Connecting to the instance via SSH...
+==> amazon-ebs: Stopping the source instance...
+==> amazon-ebs: Waiting for the instance to stop...
+==> amazon-ebs: Creating the AMI: packer-example 1371856345
+==> amazon-ebs: AMI: ami-19601070
+==> amazon-ebs: Waiting for AMI to become ready...
+==> amazon-ebs: Terminating the source AWS instance...
+==> amazon-ebs: Deleting temporary security group...
+==> amazon-ebs: Deleting temporary keypair...
+==> amazon-ebs: Build finished.
+
+==> Builds finished. The artifacts of successful builds are:
+--> amazon-ebs: AMIs were created:
+
+us-east-1: ami-19601070
+```
+
+`packer build` işleminin sonunda, Packer, kurulumun bir parçası olarak imajı üretir. Çıktılar (Artifacts), bir kurulumun sonucudur ve genellikle bir kimliği (bir AMI durumunda olduğu gibi) veya bir dizi dosyayı (bir VMware sanal makinesi için olduğu gibi) temsil eder. Bu örnekte yalnızca tek bir çıktıya sahibiz: us-east-1 te oluşturulan bir AMI.
+
+Bu AMI kullanıma hazırdır. İsterseniz gidip bu AMI'yi hemen başlatabilir.
+
+> Not: AMI kimliğiniz mutlaka yukarıda belirtilenlerden farklı olacaktır. Yukarıdaki örnek çıktıdaki gibi bir başlatmayı denerseniz, bir hata mesajı alırsınız. AMI'nızı başlatmayı denemek isterseniz, AMI kimliğinizi Packer çıktısından alın.
+
+> Note: If you see a VPCResourceNotSpecified error, Packer might not be able to determine the default VPC, which the t2 instance types require. This can happen if you created your AWS account before 2013-12-04. You can either change the instance_type to m3.medium, or specify a VPC. Please see http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/default-vpc.html for more information. If you specify a vpc_id, you will also need to set subnet_id. Unless you modify your subnet's IPv4 public addressing attribute, you will also need to set associate_public_ip_address to true, or set up a VPN.
+
+### Imajı Yönetme
+
+Packer yalnızca imajlar oluşturur. Onları herhangi bir şekilde yönetmeye çalışmaz. Kurulduktan sonra, bunları uygun gördüğünüz gibi başlatmak veya yok etmek size kalmıştır. Kolaylık için imaj adlarını saklamak isterseniz, [HashiCorp Atlas'ı](https://atlas.hashicorp.com/session) kullanabilirsiniz. Bu başlangıç kılavuzunun sonuna imajları uzaktan oluşturmayı ve saklamayı ele alacağız.
+
+Yukarıdaki örneği çalıştırdıktan sonra, AWS hesabınızda bu kurulumla ilişkili bir AMI olacaktır. AMI'ler S3 tarafından Amazon tarafından saklanır, bu nedenle aylık 0.01 Dolar tutarında ücretlendirilmek istemiyorsanız, muhtemelen kaldırmak isteyeceksinizdir. AMI'yi önce [AWS AMI yönetim](https://console.aws.amazon.com/ec2/home?region=us-east-1#s=Images) sayfasından kaydını silerek kaldırın. Sonra, [AWS anlık görüntü yönetim](https://console.aws.amazon.com/ec2/home?region=us-east-1#s=Snapshots) sayfasındaki ilişkili anlık görüntüsünü (snapshot) silin.
+
+Tebrik ederiz! İlk imajınızı Packer ile oluşturdunuz. Bu imaj tamamen yararsız da olsa, bu sayfada Packer'ın nasıl çalıştığını, şablonları, şablonların nasıl doğrulanacağı ve oluşturulacağı hakkında genel bir fikir edindiniz.
 
 ## Kurulum
 
