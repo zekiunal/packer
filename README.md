@@ -435,6 +435,46 @@ Gördüğünüz gibi Packer hem Amazon hem de DigitalOcean imajlarını paralel 
 
 Kurulumların sonunda, Packer yaratılmış imajları (bir AMI ve bir DigitalOcean anlık görüntüsü) listeler. Yaratılan her iki imajda da önceden Redis kurulmuş temel Ubuntu kurulumlarıdır.
 
+### Vagrant Kutuları
+Packer, bir kurucunun (AMI veya düz VMware görüntüsü gibi) çıktılarını alıp bir Vagrant Nesnesine (Vagrant Box) dönüştürme yeteneğine de sahiptir.
+
+Bu operasyon, [Ön tanımlı işlemler(post-processors)](https://www.packer.io/docs/templates/post-processors.html) kullanılarak yapılır. Bunlar, daha önce çalışan kurucunun (builder) veya Ön tanımlı işlemlerin (post-processors) oluşturduğu bir çıktıyı (artifact ) alır ve yeni bir çıktıya (artifact) dönüştürür. Vagrant `post-processor`, bir kurucudan bir çıktı alır ve bir Vagrant nesnesine dönüştürür.
+
+Ön tanımlı işlemler(post-processors) genellikle çok yararlı bir kavramdır. Ön tanımlı işlemlerin (post-processors) çok ilginç kullanım örnekleri vardır. Örneğin, imajı sıkıştırmak, yüklemek, test etmek vb. için bir ön tanımlı işlem (post-processor) yazabilirsiniz.
+
+AWS AMI'yi, [`vagrant-aws eklentisi`](https://github.com/mitchellh/vagrant-aws) ile kullanılabilen bir Vagrant nesnesine dönüştürmek amacıyla Vagrant post-processors eklemek için şablonumuzu değiştirelim. Bir önceki sayfada ve DigitalOcean'u takip ettiyseniz, DigitalOcean içinde benzer bir ihtiyaç duyabilirsiniz, ancak şuan da Packer DigitalOcean için Vagrant nesneleri oluşturamaz. Yakında bu da mümkün olacak.
+
+#### Ön Tanımlı İşlemlerin Etkinleştirilmesi
+
+Ön Tanımlı İşlemler, bir şablonun `post-processor` bölümüne eklenir. `example.json` şablonunuzu değiştirin ve aşağıdaki bölümü ekleyin. Şablonunuz şöyle görünmelidir:
+
+```json
+{
+  "builders": ["..."],
+  "provisioners": ["..."],
+  "post-processors": ["vagrant"]
+}
+```
+
+
+Bu örnekte, "vagrant" olarak adlandırılan tek bir Ön Tanımlı İşlemi (post-processor) etkinleştiriyoruz. Bu `post-processor` Packer da var olan bir özelik olup Vagrant nesneleri yaratacaktır. Bununla birlikte, her zaman [yeni `post-processor`ler](https://www.packer.io/docs/extending/custom-post-processors.html) de tanımlayabilirsiniz. `post-processor`  yapılandırmasıyla ilgili ayrıntılar, [Ön tanımlı işlemler belgelerinde](https://www.packer.io/docs/templates/post-processors.html) bulunmaktadır.
+
+`packer validate` ile şablonu doğrulayın.
+
+#### Ön Tanımlı İşlemleri Kullanma
+
+`packer build` komutunu çalıştırmanız yeterlidir ve artık ön tanımlı işlem `post-processors` devreye girecektir. Packer DigitalOcean için bir Vagrant nesnesi yapamadığından, sadece AMI'yı oluşturması için ` -only=amazon-ebs` parametresini `packer build` komutuna geçirmenizi öneririm. Komut aşağıdaki gibi görünmelidir:
+
+```
+$ packer build -only=amazon-ebs example.json
+```
+
+Çıktı, imajı listedikten sonra, bir Vagrant nesnesinin (varsayılan olarak, bulunduğu dizindeki packer_aws.box dosyası) oluşuturulduğunu fark edeceksiniz. Başardık!
+
+Ancak, Amazon EBS kurucusunun (builder) çıktısı nereye gitti? `post-processors` kullanırken, ara üretimler (artifacts) genellikle istenmedikleri için Vagrant tarafından kaldırılır. Sadece son çıktı (artifact) korunur. Elbette bu davranış değiştirilebilir. Bu davranışın nasıl kontrol edildiği bu [dokümantasyonda](https://www.packer.io/docs/templates/post-processors.html) açıklanmıştır.
+
+Ara çıktıyı (artifacts) kaldırılırken, çıktı (builder) alttaki dosyaları veya kaynakları da kaldırılır. Örneğin, bir VMware imajı oluştururken, bir Vagrant nesnesine çevirirseniz, VMware imajının dosyaları Vagrant nesnesine sıkıştırıldıklarından silinir. Bununla birlikte, AWS imajları oluşturmakla birlikte, AMI, Vagrant'ın çalışması için gerekli olduğundan saklanır.
+
 ## Kurulum
 
 Packer'ı kurulumu oldukça basittir. Packer'ı yüklemek için iki yaklaşım vardır:
