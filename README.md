@@ -548,7 +548,7 @@ Artık Atlas, önceden Redis yapılandırılmış bir AMI oluşturabiliyor. Bu h
 
 ### Sonraki Adımlar
 
-Bu Packer için başlangıç kılavuzuydu. Şimdi, temel Packer kullanımıyla rahat hissediyor olmalısınız. Şablonları anlıyor, kurucuları, sağlayıcıları vb. bileşenleri tanımlayabiliyoruz. Bu noktada Packer'ı gerçek senaryolarda düşünmeye ve kullanmaya hazırsınız.
+Bu Packer için başlangıç kılavuzuydu. Şimdi, temel Packer kullanımıyla ilgili daha rahat hissediyor olmalısınız. Şablonları anlıyor, kurucuları, sağlayıcıları vb. bileşenleri tanımlayabiliyorsunuz. Bu noktada Packer'ı gerçek senaryolarda düşünmeye ve kullanmaya hazırsınız.
 
 Bu noktadan sonra sizin için en önemli referans [dokümantasyon](https://www.packer.io/docs/index.html) olacaktır. Dokümantasyon, Packer'ın tüm genel özelliklerine ve yeteneklerine ilişkin güçlü bir referans kaynağıdır.
 
@@ -556,18 +556,23 @@ Packer'ın HashiCorp ekosistemi araçlarıyla nasıl çalıştığına ilişkin 
 
 Packer'ı kullanırken, lütfen yorumlarınızı ve kaygılarınızı [elektronik posta veya IRC](https://www.packer.io/community.html) kanalı ile paylaşın. Ayrıca Packer [açık kaynaktır](https://github.com/hashicorp/packer), isterseniz lütfen katkıda bulunun. Katkılara çok açığız.
 
+-----------------------------------------
 
-## Kurulum
+## Packer Dokümantasyonu
+
+Packer dökümantasyonuna hoş geldiniz! Bu dökümantasyon Packer'daki tüm mevcut özellikler ve yetenekler için referans kaynağıdır. Packer'ı kullanmaya yeni başlıyorsanız, lütfen [giriş ve başlangıç kılavuzuna](https://www.packer.io/intro) göz atın.
+
+### Kurulum
 
 Packer'ı kurulumu oldukça basittir. Packer'ı yüklemek için iki yaklaşım vardır:
 
-* Derlenmiş bir dosya kullanma
+* Derlenmiş bir [dosya](https://www.packer.io/docs/install/index.html#precompiled-binaries) kullanma
 
-* Kaynaktan derleme
+* Kaynaktan [derleme](https://www.packer.io/docs/install/index.html#compiling-from-source)
 
-Hazır derlenmiş bir dosyayı indirmek en kolay yoldur.
+Hazır derlenmiş bir dosyayı indirmek en kolay yoldur. We provide downloads over TLS along with SHA256 sums to verify the binary. We also distribute a PGP signature with the SHA256 sums that can be verified.
 
-### Derlenmiş bir dosya kullanma
+#### Derlenmiş Bir Dosya Kullanma
 
 Önceden derlenmiş dosyayı yüklemek için, işletim sisteminize uygun paketi indirin. Packer bir `zip` dosyası olarak paketlenmiştir. Başka sistem paketlerini desteklemek için kısa vadede bir planımız yok.
 
@@ -575,7 +580,7 @@ Zip dosyasını indirildikten sonra, herhangi bir dizine unzip ile açın. Packe
 
 Dosyayı sisteminizdeki herhangi bir yere kopyalayın. Komut satırından erişmeyi düşünüyorsanız, `PATH` ortam değişkeninize `packer` dosyasının konumu eklediğinizden emin olun.
 
-### Kaynaktan Derleme
+#### Kaynaktan Derleme
 
 Kaynaklardan derlemek için [Go'nun](https://golang.org/) yüklü olması ve düzgün yapılandırılması (GOPATH ortam değişkeni seti de dahil olmak üzere) ve PATH ortam değişkeninde `git` dosya yolunun tanımlı olması gerekir.
 
@@ -593,7 +598,7 @@ $ cd packer
 $ make dev
 ```
 
-### Yüklemeyi Doğrulama
+#### Yüklemeyi Doğrulama
 
 Packer'ın doğru şekilde kurulduğunu doğrulamak için, sisteminizde `packer -v` komutunu çalıştırın. Yardım çıktısını görmelisiniz. Komut satırından çalıştırıyorsanız, PATH ortam değişkeninin tanımlı olduğundan emin olun, aksi taktirde Packer'ın bulunamadığına dair bir hata alabilirsiniz. (`Packer not being found`)
 
@@ -601,7 +606,7 @@ Packer'ın doğru şekilde kurulduğunu doğrulamak için, sisteminizde `packer 
 $ packer -v
 ```
 
-## Packer Terminolojisi
+### Packer Terminolojisi
 
 Packer'ı daha önce kullanmadıysanız, Packer dokümantasyonunda kullanılan bir kaç terim vardır. Neyse ki, bu terimlerin sayısı oldukça azdır. Bu sayfa Packer'ı anlamak ve kullanmak için gereken tüm terminolojileri belgelemektedir. Hızlı başvuru için terminoloji alfabetik sıradadır.
 
@@ -619,20 +624,20 @@ Packer'ı daha önce kullanmadıysanız, Packer dokümantasyonunda kullanılan b
 
 **Şablonlar (Templates)**, Packer'ın çeşitli bileşenlerini yapılandırarak bir veya daha fazla kurulumu tanımlayan JSON dosyalarıdır. Packer, bir şablonu okuyabilir ve bu bilgileri paralel olarak birden çok makine görüntüsü oluşturmak için kullanabilir.
 
-## Packer Komutları (CLI)
+### Packer Komutları (CLI)
 Packer, komut satırı arabirimi kullanılarak kontrol edilir. Packer ile olan tüm etkileşimler `packer` komut satırı aracı ile yapılır. Diğer birçok komut satırı aracı gibi, `packer` aracı da çalıştırmak için bir alt komut alır ve bu alt komutun da ek seçenekleri olabilir. Alt komutlar, `packer alt-komut` ile yürütülür, burada `alt-komut` gerçek komuttur.
 
 `packer`'ı tek başına çalıştırırsanız, tüm kullanılabilir alt komutları ve yaptıklarının kısa bir özetini gösteren yardım görüntülenir. Buna ek olarak, belirli bir alt komut için daha ayrıntılı bir yardım çıktısı almak için herhangi bir `packer` komutunu -h parametresi ile çalıştırabilirsiniz.
 
 Komut satırında bulunan belgelere ek olarak, her komut bu web sitesinde belgelenmiştir. Soldaki gezinmeyi kullanarak belirli bir alt komut belgelerini bulabilirsiniz.
 
-### Makine tarafından okunabilir çıktı
+#### Makine tarafından okunabilir çıktı
 
 Varsayılan olarak, Packer'ın çıktısı insan tarafından okunabilir niteliktedir. Packer'ı kullanmaktan zevk duymak için güzel biçimlendirme, boşluk ve renkler kullanıyor. Bununla birlikte, Packer otomasyon düşünülerek oluşturulmuştur. Bu amaçla, Packer, Packer'ı otomatik ortamlarda kullanmanıza izin veren, tam olarak makine tarafından okunabilen bir çıktı ayarını destekler.
 
 Makine tarafından okunabilen çıktı biçimi  awk/sed/grep/etc'dir. Bu özellik kolay ve yeni bir format öğrenmenizi gerektirmeden tanıdık bir kullanım sağlar.
 
-### Makine tarafından okunabilir çıktıyı etkinleştirme
+#### Makine tarafından okunabilir çıktıyı etkinleştirme
 
 Makine tarafından okunabilen çıktı biçimi, `-machine-readable` parametresini herhangi bir Packer komutuna geçirerek etkinleştirilebilir. Bu, tüm çıktıların stdout'da makineden okunabilir olmasını sağlar. Günlüğe kaydetme etkinleştirilirse stderr'da görünmeye devam eder. Çıktının bir örneği aşağıda gösterilmiştir:
 
@@ -648,7 +653,7 @@ Bu konu daha sonra ayrıntılı olarak ele alınacaktır. Fakat gördüğünüz 
 
 > `-machine-readable` parametresi, otomatikleştirmeye yönelik tasarlanmıştır ve etkileşimli ortamlar için tasarlanmış `-debug` parametresi nin yetenekleri ile özelleştirilmiştir.
 
-### Makine tarafından okunabilir çıktı biçimi
+#### Makine tarafından okunabilir çıktı biçimi
 
 Makine tarafından okunabilir format, satır yönelimli, virgülle sınırlandırılmış bir metin biçimidir. Bu, `Ruby` veya `Python` gibi  programlama dillerine ek olarak `awk` veya `grep` gibi standart Unix araçlarını kullanarak ayrıştırmanın daha kolay olmasını sağlar.
 
@@ -672,15 +677,15 @@ Within the format, if data contains a comma, it is replaced with %!(PACKER_COMMA
 
 Newlines within the format are replaced with their respective standard escape sequence. Newlines become a literal \n within the output. Carriage returns become a literal \r.
 
-### Makine Tarafından Okunabilir Mesaj Türleri
+#### Makine Tarafından Okunabilir Mesaj Türleri
 
 Makine tarafından okunabilen mesaj türleri, `machine-readable format` dokümantasyon bölümünde bulunabilir. Bu bölüm, varsayılan olarak Packer çekirdeğiyle birlikte gönderilen tüm bileşenlerin yanı sıra Packer tarafından sunulan tüm ileti türleriyle ilgili belgeler içerir.
 
-### `build` Komutu
+#### `build` Komutu
 
 Packer `build` komutu bir şablon ile birlikte çalışır ve bir çıktı kümesi üretmek için içindeki tüm kurulumları çalıştırır. Bir şablonda belirtilen çeşitli kurulumlar aksi belirtilmedikçe paralel olarak yürütülür. Çıktılar, kurulum sonucunda elde edilir.
 
-#### Seçenekler
+##### Seçenekler
 
 * **-color=false** - Renkli çıktıyı devre dışı bırakır. Varsayılan olarak etkindir.
 
@@ -697,7 +702,7 @@ Packer `build` komutu bir şablon ile birlikte çalışır ve bir çıktı küme
 
 * **-parallel=false**  - Birden fazla kurucunun paralel çalışmasını devre dışı bırakır (varsayılan olarak aktiftir).
 
-### `fix` Komutu
+#### `fix` Komutu
 
 Packer `fix` komutu bir şablon ile çalışır ve geriye dönük olarak uyumlu olmayan kısımlarını bulur ve Packer'ın en son sürümü ile kullanılabilmesi için güncelemeleri aktifleştirir. Yeni bir Packer sürümüne güncelledikten sonra, şablonlarınızın yeni sürümle birlikte çalışıp çalışmadığından emin olmak için fix komutunu çalıştırmalısınız.
 
@@ -713,7 +718,7 @@ Herhangi bir nedenle `fix` başarısız olursa, `fix` komutu "0" olmayan bir ç�
 
 `fix` komutunun yeteneklerinin tam listesine, `packer fix -h` kullanılarak yardım menüsünden erişilebilir.
 
-### `inspect` Komutu
+#### `inspect` Komutu
 
 Packer `inspect` komutu bir şablon ile çalışır ve bir şablonun tanımladığı çeşitli bileşenleri listeler. Bu, JSON'a üzerinden okuma yapmak zorunda kalmadan hızlı bir şekilde bir şablon hakkında bilgi almanıza yardımcı olabilir. Komut, şeylerin bir şablonun kabul ettiği değişkenleri, kullandığı kurucuları, kurulumları ve çalışacakları sıra gibi ayrıntıları söyler.
 
@@ -721,7 +726,7 @@ Bu komut, `machine-readable` etkin olduğunda kullanılırsa çok faydalıdır. 
 
 Komut, çeşitli bileşenlerdeki gerçek kurulumları doğrulamaz (`validate` komutu bunun içindir), ancak şablonunuzun sözdizimini doğrulayacaktır.
 
-#### Kullanım Örneği
+##### Kullanım Örneği
 
 Basit bir şablon, şöyle bir çıktı üretebilir:
 
@@ -743,7 +748,7 @@ Provisioners:
   shell
 ```
 
-### `push` Komutu
+#### `push` Komutu
 
 Packer `push` komutu, sizin için paketleyici yapınızı çalıştıran bir şablon ve gerekli diğer dosyaları Atlas hizmetine yükler.  [Atlas ile Packer hakkında daha fazla bilgi edinin.](https://atlas.hashicorp.com/help/packer/features)
 
@@ -751,11 +756,11 @@ Kurulumları uzaktan çalıştırmak, işletim sisteminizde desteklenmeyen paket
 
 Atlas'da bir kurulum çalıştırmak için `push` komutunu kullandığınızda, kurulum çıktılarının Atlas'da saklamanmasını isteyebilirsiniz. Bunu yapmak için ayrıca [Atlas post-processor](https://www.packer.io/docs/post-processors/atlas.html) yapılandırmasını yapmanız gerekecektir. Bu isteğe bağlıdır. Sonuç olarak `post-processor` (Ön tanımlı işlemler) ve `push` komutları bağımsız olarak kullanılabilir.
 
-### `validate` Komutu
+#### `validate` Komutu
 
 Packer, bir [şablonun](https://www.packer.io/docs/templates/index.html) sözdizimini ve yapılandırmasını doğrulamak için Packer `validate` komutunu kullanır. Komut başarıysa 0 çıkış durumu, başarısızsa 0 olmayan bir çıkış durumu döndürür. Buna ek olarak, başarısızlık durumunda, hata mesajı da verecektir.
 
-#### Kullanım Örneği
+##### Kullanım Örneği
 
 ```
 $ packer validate my-template.json
@@ -766,6 +771,6 @@ Errors validating build 'vmware'. 1 error(s) occurred:
 * Either a path or inline script must be specified.
 ```
 
-#### Seçenekler
+##### Seçenekler
 
 * **-syntax-only** - Şablonun yalnızca sözdizimi kontrol edilir. Yapılandırma doğrulanmaz.
