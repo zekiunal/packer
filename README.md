@@ -959,9 +959,9 @@ SSH İletişim Yolunun seçenekleri:
 
 * **ssh_username** (string) - ile SSH'ye bağlanmak için kullanıcı adı. SSH kullanılıyorsa gereklidir.
 
-##### WinRM Communicator
+##### WinRM İletişim Yolu
 
-WinRM Communicator'ın aşağıdaki seçenekleri vardır.
+WinRM İletişim Yolu seçenekleri:
 
 * **winrm_host** (string) - WinRM'nin bağlanacağı adres.
 
@@ -978,3 +978,65 @@ WinRM Communicator'ın aşağıdaki seçenekleri vardır.
 * **winrm_insecure** (boolean) - Doğruysa, sunucu sertifikası zinciri ve ana makine adını kontrol etmeyin
 
 * **winrm_use_ntlm** (boolean) - Doğruysa, hedef konukta temel kimlik doğrulama gereksinimini ortadan kaldıran varsayılan (temel kimlik doğrulama) değil, WinRM için NTLM kimlik doğrulaması kullanılacaktır. Uzaktan bağlantı kimlik doğrulaması için daha fazla bilgi [burada](https://msdn.microsoft.com/en-us/library/aa384295(v=vs.85).aspx) bulunabilir.
+
+#### Şablonun Altyapısı
+
+Şablonlardaki tüm dizeler, değişkenler ve işlevlerin çalışma zamanında bir yapılandırma parametresinin değerini değiştirmek için kullanılabilecek yaygın bir Packer şablonlama altyapısı tarafından işlenir.
+
+Şablonların sözdizimi aşağıdaki sözleşmeleri kullanır:
+
+* Herhangi bir değişken çift parantez içinde olur: {{ }}.
+* Fonksiyonlar, {{timestamp}} gibi parantez içinde doğrudan belirtilir.
+* Değişkenler, bir nokta ile öneklenir ve {{.Variable}} gibi büyük harf kullanılır.
+
+##### Fonksiyonlar
+
+Fonksiyonlar işlemleri dizeler üzerinde gerçekleştirir ve örneğin {{timestamp}} fonksiyonu geçerli zaman damgasını oluşturmak için herhangi bir dizede kullanılabilir. Bu, AMI adları gibi benzersiz anahtarlar gerektiren yapılandırmalar için kullanışlıdır. Örneğin, aynı şablona birden fazla kurucunuz olması durumunda, AMI adını `My Packer AMI {{timestamp}}` gibi bir tanım ile AMI adı saniye bazında benzersiz olacaktır. Bir saniyeden daha fazla ayrıntıya ihtiyacınız olursa  `{{uuid}}` 'i kullanmalısınız.
+
+Kullanılabilen fonksiyonların tam listesi:
+
+* Build_name - Çalıştırılan yapının adı.
+* Build_type - Şu anda kullanılan yapıcı türü.
+* Isotime [FORMAT] - UTC zaman biçimlendirilebilir. Aşağıdaki izotime biçimi referansında daha fazla örnek görebilirsiniz.
+* Lower - Dizgiyi indirir.
+* Pwd - Paketleyiciyi çalıştırırken çalışma dizini.
+* Template_dir - Yapı için şablonun dizini.
+* Timestamp - UTC'deki şu anki Unix zaman damgası.
+* Uuid - Rastgele bir UUID döndürür.
+* Upper - Dizeyi üst sıralar.
+* User - Bir kullanıcı değişkenini belirtir.
+
+###### Amazon Kurucusu İçin Özel:
+
+* clean_ami_name - AMI adları yalnızca belirli karakterleri içerebilir. Bu işlev, yasadışı karakterleri '-' karakteriyle değiştirir. ":" Olduğundan örnek kullanımı yasal bir AMI adı değildir: {{isotime | clean_ami_name}}.
+
+##### Şablonda Değişkenler
+
+Şablonda değişkenler, kurulum sırasında Packer tarafından otomatik olarak belirlenen özel değişkenlerdir. Bazı kurucular, hazırlayıcılar ve diğer bileşenler yalnızca o bileşen için kullanılabilen şablon değişkenlerine sahiptir. Şablon değişkenleri `{{.Name}}` gibi bir nokta ile ön ekli oldukları için tanınabilir. Örneğin, [kabuk (shell)](https://www.packer.io/docs/builders/vmware-iso.html) hazırlayıcı kullanıldığında, şablon değişkenleri, Packer'ın kabuk komutunu nasıl çalıştıracağını belirlemek için kullanılan [`execute_command`](https://www.packer.io/docs/provisioners/shell.html#execute_command) parametresini özelleştirmek için kullanılabilir.
+
+```json
+{
+    "provisioners": [
+        {
+            "type": "shell",
+            "execute_command": "{{.Vars}} sudo -E -S bash '{{.Path}}'",
+            "scripts": [
+                "scripts/bootstrap.sh"
+            ]
+        }
+    ]
+}
+```
+
+`{{.Vars}}` ve `{{.Path}}` şablon değişkenleri sırasıyla yürütülecek olan çevre değişkenleri ve komut dosyasının yolu ile değiştirilir.
+
+> **Not:** Şablon değişkenlerine ek olarak, kendi kullanıcı değişkenlerinizi de belirleyebilirsiniz. Kullanıcı değişkenleri hakkında daha fazla bilgi için [kullanıcı değişkenleri belgelerine](https://www.packer.io/docs/templates/user-variables.html) bakın.
+
+###### isotime Fonksiyonu ve Biçimlendirme
+
+`isotime` fonksiyonunda biçimlendirme,  Mon Jan 2 15:04:05 -0700 MST 2006 formatını kullanır:
+
+|         | Day of Week  | Month         | Date | Hour    | Minute | Second | Year | Timezone |
+|---------|--------------|---------------|------|---------|--------|--------|------|----------|
+| Numeric | -            | 01            | 02   | 03 (15) | 04     | 05     | 06   | -0700    |
+| Textual | Monday (Mon) | January (Jan) | -    | -       | -      | -      | -    | MST      |
