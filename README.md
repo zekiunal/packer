@@ -927,7 +927,7 @@ SSH İletişim Yolu, ana bilgisayara SSH ile bağlanır. Packer çalıştıran m
 
 SSH İletişim Yolunun seçenekleri:
 
-* **ssh_bastion_agent_auth** (boolean) - Doğruysa, SSH aracısı, tabya (bastion host) ile kimlik doğrulaması yapmak için kullanılacaktır. Varsayılan değer false olur.
+* **ssh_bastion_agent_auth** (boolean) - Doğruysa, SSH aracısı, tabya (bastion host) ile kimlik doğrulaması yapmak için kullanılacaktır. Varsayılan değer `false`'dur.
 
 * **ssh_bastion_host** (string) - Gerçek SSH bağlantısı için kullanılacak bir tabya (bastion host).
 
@@ -939,7 +939,7 @@ SSH İletişim Yolunun seçenekleri:
 
 * **ssh_bastion_username** (string) - tabyaya (bastion host) bağlanacak kullanıcı adı.
 
-* **ssh_disable_agent** (boolean) - Doğruysa SSH aracı yönlendirme devre dışı kalır. Varsayılan değer false olur.
+* **ssh_disable_agent** (boolean) - Doğruysa SSH aracı yönlendirme devre dışı kalır. Varsayılan değer `false`'dur.
 
 * **ssh_file_transfer_method** (scp veya sftp) - Dosyaları, Güvenli kopya (varsayılan) veya SSH Dosya Aktarım Protokolü nasıl aktarılır.
 
@@ -953,7 +953,7 @@ SSH İletişim Yolunun seçenekleri:
 
 * **ssh_private_key_file** (string) - SSH ile kimlik doğrulama yapmak için kullanılacak bir PEM tarafından kodlanmış özel anahtar dosyasının yolu.
 
-* **ssh_pty** (boolean) - Doğruysa SSH bağlantısı için bir PTY istenecektir. Bu varsayılan false değeridir.
+* **ssh_pty** (boolean) - Doğruysa SSH bağlantısı için bir PTY istenecektir. Bu varsayılan `false`'dur.
 
 * **ssh_timeout** (string) - SSH'nin kullanılabilir olması için beklenecek süre. Packer, makinenin ne zaman önyüklendiğini belirlemek için bunu kullanır, bu nedenle bu oldukça uzun sürer. Örnek değer: "10 m"
 
