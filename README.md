@@ -841,3 +841,21 @@ Not: Bu örnek, bir Amazon Web Hizmetleri hesabı gerektirir. Kurulumun gerçekl
   ]
 }
 ```
+
+#### Şablon Kurucular (builders)
+
+Şablon içinde, kurucular (builders) bölümü, Packer'ın şablon için bir makine imajı oluşturmak için kullanması gereken tüm kurulumlardan oluşan bir dizi içerir.
+
+Kurucular, çeşitli platformlar için makineler oluşturup bunlardan imaj üretmekle yükümlüdürler. Örneğin, EC2, VMware, VirtualBox için ayrı kurucular vardır. Packer varsayılan olarak birçok kurucu ile birlikte çalışır ve  yeni kurucular eklemek mümkündür.
+
+Bu dokümantasyon, bir kurucunun şablonda nasıl yapılandırılacağını açıklar. Bununla birlikte, her kurucunun kullanabileceği belirli yapılandırma seçenekleri için, söz konusu kurucunun yardım sayfalarından istifade edilmelidir.
+
+Bir şablonda, kurucu tanımlarının bir bölümü şuna benzer:
+
+```json
+{
+  "builders": [
+    // ... one or more builder definitions here
+  ]
+}
+```
