@@ -160,9 +160,9 @@ Packer, AWS dışındaki [pek çok platform](https://www.packer.io/docs/builders
 
 ### Şablon
 
-Yapılandırmayı tanımlamak için kullanılan yapılandırma dosyasına Packer terminolojisinde şablon (template) denir. Şablonun biçimi basit JSON'dur. JSON, insan ve makine tarafından düzenlemede en iyi dengeye sahiptir; hem elle yapılmış şablonların hem de makinenin ürettiği şablonların kolayca oluşturulmasına izin verir.
+Yapılandırmayı tanımlamak için kullanılan yapılandırma dosyasına Packer terminolojisinde şablon (`template`) denir. Şablonun biçimi basit JSON'dur. JSON, insan ve makine tarafından düzenlemede en iyi dengeye sahiptir; hem elle yapılmış şablonların hem de makinenin ürettiği şablonların kolayca oluşturulmasına izin verir.
 
-Şablonun tamamını oluşturarak başlayacağız, ardından her bir bölümün üzerinde kısaca duracağız. example.json dosyası oluşturun ve aşağıdaki içeriği doldurun:
+Şablonun tamamını oluşturarak başlayacağız, ardından her bir bölümün üzerinde kısaca duracağız. `example.json` dosyası oluşturun ve aşağıdaki içeriği doldurun:
 
 ```json
 {
@@ -191,7 +191,7 @@ Yapılandırmayı tanımlamak için kullanılan yapılandırma dosyasına Packer
 }
 ```
 
-Gizli anahtarlarınızı şablondan tanımlamamak için, [kullanıcı değişkenleri](https://www.packer.io/docs/templates/user-variables.html) olarak aws_access_key ve aws_secret_key'yi geçireceksiniz. [Bu sayfada](https://console.aws.amazon.com/iam/home?#security_credential) kimlik bilgileri oluşturma hakkında bilgi alabilirsiniz. Örnek IAM ilke belgesi [Amazon EC2 dokümanlarında](https://www.packer.io/docs/builders/amazon.html) bulunabilir.
+Gizli anahtarlarınızı şablondan tanımlamamak için, [kullanıcı değişkenleri](https://www.packer.io/docs/templates/user-variables.html) olarak `aws_access_key` ve `aws_secret_key`'yi parametre olarak geçireceksiniz. [Bu sayfada](https://console.aws.amazon.com/iam/home?#security_credential) kimlik bilgileri oluşturma hakkında bilgi alabilirsiniz. Örnek IAM ilke belgesi [Amazon EC2 dokümanlarında](https://www.packer.io/docs/builders/amazon.html) bulunabilir.
 
 Bu, kullanıma hazır olan temel bir şablondur. Temel bir JSON nesnesi olarak hemen tanınabilir. Nesnede, kurucular (`builders`) bölümü, belirli bir kurucuyu yapılandıran bir dizi JSON nesnesi içerir. Kurucu (`builder`), bir makine yaratmak ve makineyi bir imaja dönüştürmekle yükümlü olan Packer'ın bir bileşenidir.
 
