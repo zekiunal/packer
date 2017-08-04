@@ -17,7 +17,7 @@ Bir makine imajı, önceden yapılandırılmış bir işletim sistemi ve yeni ç
 
 Önceden hazırlanmış makine imajları bir çok avantaja sahiptir, ancak çoğu zaman makina imajlarından yararlanmaktan kaçınırız, çünkü imaj yaratmak ve yönetmek çok sıkıcıdır. Daha önce makine imajlarının oluşturulmasını otomatikleştirmek için varolan herhangi bir araç yoktu ya da öğrenme eğrisi çok yüksekti. Sonuç olarak, Packer'dan önce, makine imajlarının oluşturulması, operasyon ekiplerinin çevikliğini tehdit etti ve bu nedenle büyük faydalara rağmen makina imajlarının oluşturulması tercih edilmiyordu.
 
-Packer tüm bunları değiştirdi. Packer kullanımı kolaydır ve herhangi bir makine imajının yaratılmasını otomatikleştirir. Packer tarafından oluşturulan makina imajlarına yazılım yüklemek ve yapılandırmak için Chef veya Puppet gibi bir çözümü kullanmaya teşvik ederek modern yapılandırma yönetimini benimser.
+Packer tüm bunları değiştirdi. Packer'ın kullanımı kolaydır ve herhangi bir makine imajının yaratılmasını otomatikleştirir. Packer tarafından oluşturulan makina imajlarına yazılım yüklemek ve yapılandırmak için Chef veya Puppet gibi bir çözümü kullanmaya teşvik ederek modern yapılandırma yönetimini benimser.
 
 Başka bir deyişle: Packer, modern çağa önceden hazırlanmış makina imajlarını getirerek, kullanılmayan potansiyelin ve yeni fırsatların değerlendirmesini sağladı.
 
