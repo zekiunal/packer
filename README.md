@@ -1040,3 +1040,40 @@ Kullanılabilen fonksiyonların tam listesi:
 |---------|--------------|---------------|------|---------|--------|--------|------|----------|
 | Numeric | -            | 01            | 02   | 03 (15) | 04     | 05     | 06   | -0700    |
 | Textual | Monday (Mon) | January (Jan) | -    | -       | -      | -      | -    | MST      |
+
+*Parantez içindeki değerler kısaltılmış veya 24 saatlik değerleridir.*
+
+`isotime` her zaman UTC zamanı olduğu için "-0700" daima "+0000" biçiminde biçimlendirildiğini unutmayın.
+
+Yukarıdaki biçim seçeneklerini kullanarak bazı biçimlendirilmiş zaman örnekleri şunlardır:
+
+```
+isotime = June 7, 7:22:43pm 2014
+
+{{isotime "2006-01-02"}} = 2014-06-07
+{{isotime "Mon 1504"}} = Sat 1922
+{{isotime "02-Jan-06 03\_04\_05"}} = 07-Jun-2014 07\_22\_43
+{{isotime "Hour15Year200603"}} = Hour19Year201407
+```
+
+Lütfen çift tırnaklı karakterlerin şablonların içinde (bu örnekte, ami_name değerinde) kaçış karakteri ile kullanılması gerektiğini unutmayın:
+
+```json
+{
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "access_key": "...",
+      "secret_key": "...",
+      "region": "us-east-1",
+      "source_ami": "ami-fce3c696",
+      "instance_type": "t2.micro",
+      "ssh_username": "ubuntu",
+      "ami_name": "packer {{isotime \"2006-01-02\"}}"
+    }
+  ]
+}
+```
+
+> **Not:** Bu örnekteki Amazon kurucunun doğru şekilde yapılandırılmasına ilişkin daha fazla bilgi için [Amazon kurucu belgelerine](https://www.packer.io/docs/builders/amazon.html) bakın.
+
