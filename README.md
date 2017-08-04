@@ -882,7 +882,7 @@ Packerda her kurulum bir ada sahiptir. Varsayılan olarak, ad kullanılan kurucu
 
 Aynı kurucuyu kullanan birden çok kurulum tanımladıysanız, adlandırma yararlı olcaktır. Böyle bir durumda, adların benzersiz olması gerektiğinden, kuruculardan en az birinde farklı bir ad belirtmelisiniz.
 
-##### İletişim Yoları (communicator)
+##### İletişim Yolları (communicator)
 
 Her kurulum tek bir [iletişim yolu](https://www.packer.io/docs/templates/communicator.html) ile ilişkilendirilir. İletişim yolları, uzaktaki bir makine (AWS örneği veya yerel sanal makine gibi) ile  bağlantı kurmak için kullanılır.
 
