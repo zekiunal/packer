@@ -5,7 +5,7 @@
 
 # Packer v1.0.3
 
-Packer dökümantasyonuna hoş geldiniz! Bu dökümantasyon Packer'daki tüm mevcut özellikler ve yetenekler için referans kaynağıdır. Packer'ı kullanmaya yeni başlıyorsanız, lütfen [giriş ve başlangıç kılavuzuna](https://www.packer.io/intro) göz atın.
+Packer dökümantasyonuna hoş geldiniz! Bu dökümantasyon Packer'daki tüm mevcut özellikler ve yetenekler için referans kaynağıdır. Packer'ı kullanmaya yeni başlıyorsanız, lütfen [başlangıç kılavuzuna](https://github.com/zekiunal/packer/blob/master/INTRODUCTION.md) göz atın.
 
 ### Kurulum
 
