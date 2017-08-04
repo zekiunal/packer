@@ -247,15 +247,15 @@ $ packer build \
 us-east-1: ami-19601070
 ```
 
-`packer build` işleminin sonunda, Packer, kurulumun bir parçası olarak imajı üretir. Çıktılar (Artifacts), bir kurulumun sonucudur ve genellikle bir kimliği (bir AMI durumunda olduğu gibi) veya bir dizi dosyayı (bir VMware sanal makinesi için olduğu gibi) temsil eder. Bu örnekte yalnızca tek bir çıktıya sahibiz: us-east-1 te oluşturulan bir AMI.
+`packer build` işleminin sonunda, Packer, kurulumun bir parçası olarak imajı üretir. Çıktılar (Artifacts), bir kurulumun sonucudur ve genellikle bir kimliği (bir AMI durumunda olduğu gibi) veya bir dizi dosyayı (bir VMware sanal makinesi için olduğu gibi) temsil eder. Bu örnekte yalnızca tek bir çıktıya sahibiz: `us-east-1` te oluşturulan bir AMI.
 
-Bu AMI kullanıma hazırdır. İsterseniz gidip bu AMI'yi hemen başlatabilir.
+Bu AMI kullanıma hazırdır. İsterseniz gidip bu AMI'yi hemen başlatabilirsiniz.
 
 > **Not:** AMI kimliğiniz mutlaka yukarıda belirtilenlerden farklı olacaktır. Yukarıdaki örnek çıktıdaki gibi bir başlatmayı denerseniz, bir hata mesajı alırsınız. AMI'nızı başlatmayı denemek isterseniz, AMI kimliğinizi Packer çıktısından alın.
 
 > **Not:** If you see a VPCResourceNotSpecified error, Packer might not be able to determine the default VPC, which the t2 instance types require. This can happen if you created your AWS account before 2013-12-04. You can either change the instance_type to m3.medium, or specify a VPC. Please see http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/default-vpc.html for more information. If you specify a vpc_id, you will also need to set subnet_id. Unless you modify your subnet's IPv4 public addressing attribute, you will also need to set associate_public_ip_address to true, or set up a VPN.
 
-### Imajı Yönetme
+### İmajı Yönetme
 
 Packer yalnızca imajlar oluşturur. Onları herhangi bir şekilde yönetmeye çalışmaz. Kurulduktan sonra, bunları uygun gördüğünüz gibi başlatmak veya yok etmek size kalmıştır. Kolaylık için imaj adlarını saklamak isterseniz, [HashiCorp Atlas'ı](https://atlas.hashicorp.com/session) kullanabilirsiniz. Bu başlangıç kılavuzunun sonuna imajları uzaktan oluşturmayı ve saklamayı ele alacağız.
 
