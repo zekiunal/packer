@@ -796,3 +796,48 @@ Bir şablon, Packer'ın çeşitli bileşenlerini yapılandıran bir dizi bölüm
 * **provisioners** (isteğe bağlı), kurucular tarfından oluşturulan makineler için yazılım yüklemek ve yapılandırmak için kullanılacak olan hazırlayıcıları tanımlayan bir veya daha fazla nesne dizisidir. Belirtilmezse, hiçbir hazırlayıcı çalıştırılmaz. Bir hazırlayıcı tanımlama ve yapılandırma hakkında daha fazla bilgi için, [şablonlarda hazırlayıcı yapılandırma](https://www.packer.io/docs/templates/provisioners.html) bölümünü okuyun.
 
 * **variables** (isteğe bağlı), şablonda bulunan kullanıcı değişkenlerini tanımlayan bir veya daha fazla anahtar/değer dizesinin bir nesnesidir. Belirtilmemişse, hiçbir değişken tanımlanmaz. Kullanıcı değişkenlerini tanımlama ve kullanma hakkında daha fazla bilgi için, [şablonlardaki kullanıcı değişkenleri](https://www.packer.io/docs/templates/user-variables.html) bölümünü okuyun.
+
+#### Yorumlar
+
+JSON yorumları desteklemiyor ve Packer tanımlayamedığı bölümleri doğrulama hataları olarak bildiriyor. Şablona yorum eklemek isterseniz, bir ağacın en üst düğümüne (root) alt çizgi önekini ekleyebilirsiniz. Örnek:
+
+```json
+{
+  "_comment": "This is a comment",
+  "builders": [
+    {}
+  ]
+}
+```
+
+**Önemli:** Yalnızca ağacın en üst düğümüne (root) sahip bölümlerde altçizgi öneki olabilir. Kurucular (builders), hazırlayıcılar (provisioners) vb. bölümler doğrulama hatalarına neden olacaktır.
+
+#### Örnek Şablon
+
+Aşağıda, `packer build` ile çağrılabilecek temel bir şablon örneği verilmiştir. AWS'de bir makina oluşturur ve bir kere çalıştırıldıktan sonra onun üzerine bir komut dosyası kopyalar ve bu komut dosyasını SSH'yi kullanarak çalıştırır.
+
+Not: Bu örnek, bir Amazon Web Hizmetleri hesabı gerektirir. Kurulumun gerçekleşmesi için sağlanması gereken bir takım parametreler alır. Daha fazla bilgi için [Amazon builder](https://www.packer.io/docs/builders/amazon.html) belgelerine bakın.
+
+```json
+{
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "access_key": "...",
+      "secret_key": "...",
+      "region": "us-east-1",
+      "source_ami": "ami-fce3c696",
+      "instance_type": "t2.micro",
+      "ssh_username": "ubuntu",
+      "ami_name": "packer {{timestamp}}"
+    }
+  ],
+
+  "provisioners": [
+    {
+      "type": "shell",
+      "script": "setup_things.sh"
+    }
+  ]
+}
+```
