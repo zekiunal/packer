@@ -921,23 +921,23 @@ Bununla birlikte, bir iletişim yolu belirtmek için, bir iletişim yolu tanım�
 
 İletişim yolu belirledikten sonra, o İletişim yolu için diğer yapılandırma parametrelerini belirleyebilirsiniz. Bunlar aşağıda belgelenmiştir.
 
-##### SSH Communicator
+##### SSH İletişim Yolu
 
-SSH Communicator, ana bilgisayara SSH ile bağlanır. Packer çalıştıran makinede bir SSH aracısı etkinleştirildiyse, otomatik olarak SSH aracısını uzaktaki ana makineye iletir.
+SSH İletişim Yolu, ana bilgisayara SSH ile bağlanır. Packer çalıştıran makinede bir SSH aracısı etkinleştirildiyse, otomatik olarak SSH aracısını uzaktaki ana makineye iletir.
 
-SSH Communicator'ın şu seçenekleri vardır:
+SSH İletişim Yolunun seçenekleri:
 
-* **ssh_bastion_agent_auth** (boolean) - Doğruysa, ana SSH aracısı, kalkan sunucusu ile kimlik doğrulaması yapmak için kullanılacaktır. Varsayılan değer false olur.
+* **ssh_bastion_agent_auth** (boolean) - Doğruysa, SSH aracısı, tabya (bastion host) ile kimlik doğrulaması yapmak için kullanılacaktır. Varsayılan değer false olur.
 
-* **ssh_bastion_host** (string) - Gerçek SSH bağlantısı için kullanılacak bir kalesi barındırıcı.
+* **ssh_bastion_host** (string) - Gerçek SSH bağlantısı için kullanılacak bir tabya (bastion host).
 
-* **ssh_bastion_password** (string) - Ana kurtarma sunucusunun kimliğini doğrulamak için kullanılacak şifre.
+* **ssh_bastion_password** (string) - tabya (bastion host) kimliğini doğrulamak için kullanılacak şifre.
 
-* **ssh_bastion_port** (integer) - Bas destinenin portu. Varsayılan değer:
+* **ssh_bastion_port** (integer) - tabya (bastion host) portu. Varsayılan değer:
 
-* **ssh_bastion_private_key_file** (string) - Görev kulübesi ile kimlik doğrulamasında kullanılacak özel anahtar dosyası.
+* **ssh_bastion_private_key_file** (string) - tabya (bastion host) ile kimlik doğrulamasında kullanılacak özel anahtar dosyası.
 
-* **ssh_bastion_username** (string) - Ana kuleye bağlanacak kullanıcı adı.
+* **ssh_bastion_username** (string) - tabyaya (bastion host) bağlanacak kullanıcı adı.
 
 * **ssh_disable_agent** (boolean) - Doğruysa SSH aracı yönlendirme devre dışı kalır. Varsayılan değer false olur.
 
@@ -945,7 +945,7 @@ SSH Communicator'ın şu seçenekleri vardır:
 
 * **ssh_handshake_attempts** (integer) - SSH'nin bağlanabilmesi için girişimde bulunulacak el sıkışmaları sayısı. Bu varsayılan olarak 10'dur.
 
-* **ssh_host** (string) - SSH adresinin adresidir. Bu genellikle yapıcı tarafından otomatik olarak yapılandırılır.
+* **ssh_host** (string) - SSH adresidir. Bu genellikle kurucu tarafından otomatik olarak yapılandırılır.
 
 * **ssh_password** (string) - SSH ile kimlik doğrulamasında kullanılacak düz metin parolası.
 
@@ -977,4 +977,4 @@ WinRM Communicator'ın aşağıdaki seçenekleri vardır.
 
 * **winrm_insecure** (boolean) - Doğruysa, sunucu sertifikası zinciri ve ana makine adını kontrol etmeyin
 
-* **winrm_use_ntlm** (boolean) - Doğruysa, hedef konukta temel kimlik doğrulama gereksinimini ortadan kaldıran varsayılan (temel kimlik doğrulama) değil, WinRM için NTLM kimlik doğrulaması kullanılacaktır. Uzaktan bağlantı kimlik doğrulaması için daha fazla bilgi burada bulunabilir.
+* **winrm_use_ntlm** (boolean) - Doğruysa, hedef konukta temel kimlik doğrulama gereksinimini ortadan kaldıran varsayılan (temel kimlik doğrulama) değil, WinRM için NTLM kimlik doğrulaması kullanılacaktır. Uzaktan bağlantı kimlik doğrulaması için daha fazla bilgi [burada](https://msdn.microsoft.com/en-us/library/aa384295(v=vs.85).aspx) bulunabilir.
