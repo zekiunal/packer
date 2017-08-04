@@ -9,52 +9,51 @@ Packer dünyasına hoşgeldiniz! Bu rehber Packer'ın ne olduğunu, sunduğu ava
 
 ## Packer Nedir?
 
-Packer, tek bir kaynak yapılandırmasından çoklu platformlar için özdeş makine görüntüleri oluşturmak için kullanılan açık kaynaklı bir araçtır. Packer hafiftir, bilinen her işletim sisteminde çalışır ve çoklu platformlar için paralel olarak makine görüntüleri yaratarak oldukça performans gösterir. Packer, Chef veya Puppet gibi yapılandırma yönetiminin yerini tutmaz. Aslında, görüntüler oluştururken Packer, imaja yazılım yüklemek için Chef veya Puppet gibi araçları kullanabilir.
+Packer, tek bir kaynak yapılandırmasından çoklu platformlar için özdeş makine imajları oluşturmak için kullanılan açık kaynaklı bir araçtır. Packer hafiftir, bilinen her işletim sisteminde çalışır ve çoklu platformlar için paralel olarak makine imajları yaratarak oldukça performans gösterir. Packer, Chef veya Puppet gibi yapılandırma yönetiminin yerini tutmaz. Aslında, imaj oluştururken Packer, imaja yazılım yüklemek için Chef veya Puppet gibi araçları kullanabilir.
 
-Bir makine görüntüsü, önceden yapılandırılmış bir işletim sistemi ve yeni çalışan makinelerin hızlı bir şekilde oluşturulması için kullanılan yüklenmiş bir yazılım içeren tek bir statik birimdir. Makine görüntü formatları her platform için değişir. Örnek vermek gerekirse, EC2 için [AMI'ler](https://en.wikipedia.org/wiki/Amazon_Machine_Image), VMware için VMDK/VMX dosyaları, VirtualBox için OVF vb.
+Bir makine imajı, önceden yapılandırılmış bir işletim sistemi ve yeni çalışan makinelerin hızlı bir şekilde oluşturulması için kullanılan yüklenmiş bir yazılım içeren tek bir statik birimdir. Makine imaj formatları her platform için değişir. Örnek vermek gerekirse, EC2 için [AMI'ler](https://en.wikipedia.org/wiki/Amazon_Machine_Image), VMware için VMDK/VMX dosyaları, VirtualBox için OVF vb.
 
 ## Neden Packer Kullanmalıyım?
 
-Önceden hazırlanmış makine görüntüleri bir çok avantaja sahiptir, ancak çoğu zaman makina görüntülerinden yararlanmaktan kaçınırız, çünkü görüntüler yaratmak ve yönetmek çok sıkıcıdır. Daha önce Makine görüntülerinin oluşturulmasını otomatikleştirmek için varolan herhangi bir araç yoktu ya da öğrenme eğrisi çok yüksekti. Sonuç olarak, Packer'dan önce, makine imajlarının oluşturulması, operasyon ekiplerinin çevikliğini tehdit etti ve bu nedenle büyük faydalara rağmen makina görüntülerinin oluşturulması tercih edilmiyordu.
+Önceden hazırlanmış makine imajları bir çok avantaja sahiptir, ancak çoğu zaman makina imajlarından yararlanmaktan kaçınırız, çünkü imaj yaratmak ve yönetmek çok sıkıcıdır. Daha önce makine imajlarının oluşturulmasını otomatikleştirmek için varolan herhangi bir araç yoktu ya da öğrenme eğrisi çok yüksekti. Sonuç olarak, Packer'dan önce, makine imajlarının oluşturulması, operasyon ekiplerinin çevikliğini tehdit etti ve bu nedenle büyük faydalara rağmen makina imajlarının oluşturulması tercih edilmiyordu.
 
-Packer tüm bunları değiştirdi. Packer kullanımı kolaydır ve herhangi bir makine imajının yaratılmasını otomatikleştirir. Packer tarafından oluşturulan makina görüntülerine yazılım yüklemek ve yapılandırmak için Chef veya Puppet gibi bir çözümü kullanmaya teşvik ederek modern yapılandırma yönetimini benimser.
+Packer tüm bunları değiştirdi. Packer kullanımı kolaydır ve herhangi bir makine imajının yaratılmasını otomatikleştirir. Packer tarafından oluşturulan makina imajlarına yazılım yüklemek ve yapılandırmak için Chef veya Puppet gibi bir çözümü kullanmaya teşvik ederek modern yapılandırma yönetimini benimser.
 
-Başka bir deyişle: Packer, modern çağa önceden hazırlanmış makina görüntülerini getirerek, kullanılmayan potansiyelin ve yeni fırsatların değerlendirmesini sağladı.
+Başka bir deyişle: Packer, modern çağa önceden hazırlanmış makina imajlarını getirerek, kullanılmayan potansiyelin ve yeni fırsatların değerlendirmesini sağladı.
 
 ### Packer Kullanmanın Avantajları
    
-**Süper hızlı altyapı dağıtımı.** Packer tamamen hazır ve yapılandırılmış makina görüntülerini, birkaç dakika veya saat yerine saniyeler içinde başlatmanızı sağlar. Geliştirme amaçlı sanal makineleri saniyeler içinde piyasaya sürülebileceğinden, sadece yayına alma süreçleri için değil, geliştirme süreçleriniz için de faydalıdır.
+**Süper hızlı altyapı dağıtımı.** Packer tamamen hazır ve yapılandırılmış makina imajlarını, birkaç dakika veya saat yerine saniyeler içinde başlatmanızı sağlar. Geliştirme amaçlı sanal makineleri saniyeler içinde piyasaya sürülebileceğinden, sadece yayına alma süreçleri için değil, geliştirme süreçleriniz için de faydalıdır.
 
-**Birden çok sağlayıcı için taşınabilirlik.** Packer, birden fazla platform için aynı görüntüleri oluşturduğundan, yayına alma süreciniz için AWS, test/kalite kontrolü için OpenStack gibi özel bir bulutt  ve geliştirme ortamınız için VMware veya VirtualBox gibi masaüstü sanallaştırma çözümlerini kullanabilirsiniz. Her ortam için, aynı taşınabilir görüntü üretildiğinden taşınabilirlik sağlanmış olur.
+**Birden çok sağlayıcı için taşınabilirlik.** Packer, birden fazla platform için aynı imajları oluşturduğundan, yayına alma süreciniz için AWS, test/kalite kontrolü için OpenStack gibi özel bir bulutt  ve geliştirme ortamınız için VMware veya VirtualBox gibi masaüstü sanallaştırma çözümlerini kullanabilirsiniz. Her ortam için, aynı taşınabilir imajlar üretildiğinden taşınabilirlik sağlanmış olur.
 
-**Geliştirilmiş kararlılık.** Packer, bir görüntüyü kurulurken, makineye tüm yazılımları yükler ve yapılandırır. Eğer komut dosyalarında hata varsa, makine açıldıktan birkaç dakika yerine daha erken aşamada hata yakalanabilir.
+**Geliştirilmiş kararlılık.** Packer, bir imajı kurulurken, makineye tüm yazılımları yükler ve yapılandırır. Eğer komut dosyalarında hata varsa, makine açıldıktan birkaç dakika yerine daha erken aşamada hata yakalanabilir.
 
-**Daha fazla test edilebilirlik.** Bir makine görüntüsü oluşturulduktan sonra, bu makine görüntüsü, herşeyin yolunda olduğunu doğrulamak için hızlı bir şekilde başlatılabilir ve "Somoke Test" uygulayabilir. Böylece, bu görüntüye sahip diğer makinelerin düzgün şekilde çalıştığından emin olabilirsiniz.
+**Daha fazla test edilebilirlik.** Bir makine imajı oluşturulduktan sonra, bu makine imajı, herşeyin yolunda olduğunu doğrulamak için hızlı bir şekilde başlatılabilir ve "Smoke Test" uygulayabilir. Böylece, bu imaja sahip diğer makinelerin düzgün şekilde çalıştığından emin olabilirsiniz.
 
 Packer, tüm bu avantajlardan faydalanmanın son derece kolay olmasını sağlar.
 
 Ne için bekliyorsun? Başlayalım!
 
-
 ## Kullanım Örnekleri 
 
-Artık Packer'ın ne yaptığını ve görüntü yaratmanın faydalarının ne olduğunu biliyorsun. Bu bölümde, Packer için bazı kullanım durumlarını listeleyeceğiz. Bunun kapsamlı bir liste olmadığını unutmayın. Burada listelenmeyen birçok kullanım örneği var. Bu liste, Packer'ın işlemlerinizi nasıl geliştirebileceği hakkında size bir fikir vermek amacıyla verilmiştir.
+Artık Packer'ın ne yaptığını ve imaj yaratmanın faydalarının ne olduğunu biliyorsun. Bu bölümde, Packer için bazı kullanım durumlarını listeleyeceğiz. Bunun kapsamlı bir liste olmadığını unutmayın. Burada listelenmeyen birçok kullanım örneği var. Bu liste, Packer'ın işlemlerinizi nasıl geliştirebileceği hakkında size bir fikir vermek amacıyla verilmiştir.
 
 ### Sürekli Dağıtım
 
-Packer hafif, taşınabilir ve komut satırı tabanlıdır. Chef/Puppet'e yapılan her değişiklikte birden fazla platform için yeni makine görüntüleri oluşturmak için kullanılabilir. Bu sebeple, sürekli dağıtım hattınızın merkezine koymanız için mükemmel bir araçtır. 
+Packer hafif, taşınabilir ve komut satırı tabanlıdır. Chef/Puppet'e yapılan her değişiklikte birden fazla platform için yeni makine imajları oluşturmak için kullanılabilir. Bu sebeple, sürekli dağıtım hattınızın merkezine koymanız için mükemmel bir araçtır. 
 
-Bu hattın bir parçası olarak, yeni oluşturulan görüntüler daha sonra başlatılacak, test edilecek ve altyapı değişikliklerinin çalışıp çalışmadığı doğrulanacaktır. Testler geçerliyse, görüntünün dağıtıldığında çalışacağından emin olabilirsiniz. Bu, altyapı değişiklikleri için yeni bir kararlılık ve test edilebilirlik seviyesine geçminizi sağlar.
+Bu hattın bir parçası olarak, yeni oluşturulan imajlar daha sonra başlatılacak, test edilecek ve altyapı değişikliklerinin çalışıp çalışmadığı doğrulanacaktır. Testler geçerliyse, imajın dağıtıldığında çalışacağından emin olabilirsiniz. Bu, altyapı değişiklikleri için yeni bir kararlılık ve test edilebilirlik seviyesine geçminizi sağlar.
 
 ### Dev/Prod Denkliği
 
-Packer, geliştirme, test etme ve yayına alma ortamlarınızı olabildiğince benzer tutmaya yardımcı olur. Packer, aynı anda birden fazla platform için görüntü üretmek için kullanılabilir. Packer'ı kullanarak tek bir şablondan aynı anda bir AMI ve VMware makinesi üretebilirsiniz. Böylece yayına almak için AWS'yi ve gelişme için VMware'i (belki de Vagrant ile birlikte) için kullanabilirsiniz, 
+Packer, geliştirme, test etme ve yayına alma ortamlarınızı olabildiğince benzer tutmaya yardımcı olur. Packer, aynı anda birden fazla platform için imaj üretmek için kullanılabilir. Packer'ı kullanarak tek bir şablondan aynı anda bir AMI ve VMware makinesi üretebilirsiniz. Böylece yayına almak için AWS'yi ve gelişme için VMware'i (belki de Vagrant ile birlikte) için kullanabilirsiniz, 
 
 Bu yeteneği yukarıdaki sürekli dağıtımlı durumuyla eşleştirin ve geliştirme aşamasından, yayına almaya kadar tutarlı çalışma ortamları için oldukça esnek bir sisteme sahip olun.
 
 ### Cihaz/Demo Oluşturma
 
-Packer, paralel olarak birden fazla platform için tutarlı görüntüler oluşturduğundan, cihazlar ve tek kullanımlık ürün demoları oluşturmak için mükemmeldir. Yazılımınız değiştikçe, otomatik olarak yazılımı önceden yüklenmiş  cihazlar oluşturabilirsiniz. Potansiyel kullanıcılar daha sonra istedikleri ortamda yazılımınızı kullanmaya başlayabilir.
+Packer, paralel olarak birden fazla platform için tutarlı imajlar oluşturduğundan, cihazlar ve tek kullanımlık ürün demoları oluşturmak için mükemmeldir. Yazılımınız değiştikçe, otomatik olarak yazılımı önceden yüklenmiş  cihazlar oluşturabilirsiniz. Potansiyel kullanıcılar daha sonra istedikleri ortamda yazılımınızı kullanmaya başlayabilir.
 
 Yazılımı karmaşık gereksinimlerle birlikte paketlemek hiç bu kadar kolay olmamıştı.
 
@@ -62,7 +61,7 @@ Yazılımı karmaşık gereksinimlerle birlikte paketlemek hiç bu kadar kolay o
 
 HashiCorp, açık kaynak kodlu Vagrant, Packer, Terraform, Serf, Consul, Nomad ve ticari bir ürün olan Atlas'ın yaratıcısıdır. Packer, HashiCorp'un uygulama dağıtımını sürüme geçirilmiş, denetlenebilir, tekrarlanabilir ve işbirliğine dayalı bir süreç haline getirmek için inşa ettiği ekosistemin sadece bir parçasıdır. Modern veri merkezinin nitelikleri ve sorumlu uygulama sunumu ile ilgili inançlarımız hakkında daha fazla bilgi edinmek için Atlas Mindset: Altyapı Sürümü Kontrolü başlıklı makaleyi okuyun.
 
-Makine görüntüleri ve dağıtılabilir eserler oluşturmak için Packer kullanıyorsanız, muhtemelen bu eserler dağıtmak için bir çözüm bulmanız gerekir. Terraform, altyapıyı oluşturmak, birleştirmek ve değiştirmek için kullanılan bir araçtır.
+Makine imajları ve dağıtılabilir eserler oluşturmak için Packer kullanıyorsanız, muhtemelen bu eserler dağıtmak için bir çözüm bulmanız gerekir. Terraform, altyapıyı oluşturmak, birleştirmek ve değiştirmek için kullanılan bir araçtır.
 
 Aşağıda, HashiCorp'un açık kaynak projelerinin özetleri ve Atlas'ın tam bir uygulama dağıtım iş akışı oluşturmak için bunları nasıl bağladığını gösteren bir grafik bulunmaktadır.
 
@@ -72,7 +71,7 @@ Aşağıda, HashiCorp'un açık kaynak projelerinin özetleri ve Atlas'ın tam b
 
 [Atlas](https://atlas.hashicorp.com/) HashiCorp'un tek ticari ürünüdür. Uygulama sürüm yönetimini, denetlenebilir, tekrarlanabilir ve işbirliğine dayalı yapmak için Packer, Terraform ve Consul'ü birleştirir.
 
-[Packer](https://www.packer.io) makine görüntüleri ve AMI'ler, OpenStack görüntüleri, Docker konteynerleri gibi konuşlandırılabilir çıktılar oluşturmak için kullanılan bir HashiCorp aracıdır.
+[Packer](https://www.packer.io) makine imajları ve AMI'ler, OpenStack imajları, Docker konteynerleri gibi konuşlandırılabilir çıktılar oluşturmak için kullanılan bir HashiCorp aracıdır.
 
 [Terraform](https://www.terraform.io) altyapıyı oluşturmak, birleştirmek ve değiştirmek için kullanılan bir HashiCorp aracıdır. Atlas iş akışında Terraform, çıktı kayıt defterini okur ve altyapıyı yönetir.
 
@@ -261,7 +260,7 @@ Bu AMI kullanıma hazırdır. İsterseniz gidip bu AMI'yi hemen başlatabilir.
 
 Packer yalnızca imajlar oluşturur. Onları herhangi bir şekilde yönetmeye çalışmaz. Kurulduktan sonra, bunları uygun gördüğünüz gibi başlatmak veya yok etmek size kalmıştır. Kolaylık için imaj adlarını saklamak isterseniz, [HashiCorp Atlas'ı](https://atlas.hashicorp.com/session) kullanabilirsiniz. Bu başlangıç kılavuzunun sonuna imajları uzaktan oluşturmayı ve saklamayı ele alacağız.
 
-Yukarıdaki örneği çalıştırdıktan sonra, AWS hesabınızda bu kurulumla ilişkili bir AMI olacaktır. AMI'ler S3 tarafından Amazon tarafından saklanır, bu nedenle aylık 0.01 Dolar tutarında ücretlendirilmek istemiyorsanız, muhtemelen kaldırmak isteyeceksinizdir. AMI'yi önce [AWS AMI yönetim](https://console.aws.amazon.com/ec2/home?region=us-east-1#s=Images) sayfasından kaydını silerek kaldırın. Sonra, [AWS anlık görüntü yönetim](https://console.aws.amazon.com/ec2/home?region=us-east-1#s=Snapshots) sayfasındaki ilişkili anlık görüntüsünü (snapshot) silin.
+Yukarıdaki örneği çalıştırdıktan sonra, AWS hesabınızda bu kurulumla ilişkili bir AMI olacaktır. AMI'ler S3 tarafından Amazon tarafından saklanır, bu nedenle aylık 0.01 Dolar tutarında ücretlendirilmek istemiyorsanız, muhtemelen kaldırmak isteyeceksinizdir. AMI'yi önce [AWS AMI yönetim](https://console.aws.amazon.com/ec2/home?region=us-east-1#s=Images) sayfasından kaydını silerek kaldırın. Sonra, [AWS anlık imaj yönetimi](https://console.aws.amazon.com/ec2/home?region=us-east-1#s=Snapshots) sayfasındaki ilişkili anlık imajını (snapshot) silin.
 
 Tebrik ederiz! İlk imajınızı Packer ile oluşturdunuz. Bu imaj tamamen yararsız da olsa, bu sayfada Packer'ın nasıl çalıştığını, şablonları, şablonların nasıl doğrulanacağı ve oluşturulacağı hakkında genel bir fikir edindiniz.
 
@@ -270,7 +269,7 @@ Bu kılavuzun önceki sayfasında, ilk imajımızı Packer ile oluşturdunuz. An
 
 Bu bölümde imajımızı Redis'i kurarak tamamlayacağız. Böylelikle, yarattığımız imaj aslında Redis'i önceden yüklenmiş olacak. Redis küçük, basit bir örnek olsa da, bu, imaja daha fazla paket yüklemenin nasıl bir şey olacağı hakkında fikir verecektir.
 
-Tarihsel olarak, önceden oluşturulmuş görüntüler zorluydu, çünkü onları değiştirmek çok sıkıcı ve yavaştı. Hazırlama (Provision) da dahil olmak üzere Packer tamamen otomatik olduğundan, imajlar hızlı bir şekilde değiştirilebilir ve Chef, Puppet gibi modern yapılandırma yönetimi araçlarıyla entegre edilebilir.
+Tarihsel olarak, önceden oluşturulmuş imajlar zorluydu, çünkü onları değiştirmek çok sıkıcı ve yavaştı. Hazırlama (Provision) da dahil olmak üzere Packer tamamen otomatik olduğundan, imajlar hızlı bir şekilde değiştirilebilir ve Chef, Puppet gibi modern yapılandırma yönetimi araçlarıyla entegre edilebilir.
 
 ### Hazılıkları Yapılandırma
 
@@ -304,13 +303,13 @@ Tanımladığımız hazırlayıcı `shell` tipindedir. Bu hazırlayıcı Packer 
 
 ### Kurulum (Build)
 
-Hazırlayıcı yapılandırıldıktan sonra, her şeyin yolunda olduğunu doğrulamak için `packer validate` ile bir kez daha kontrol edin, sonra `packer build example.json` ile kurulumu gerçekleştirin. Ekran çıktısı, ilk görüntünüzü oluşturduğunuz gibi görünmelidir; ek olarak, hazırlık işleminin gerçekleştirileceği yeni bir adım daha olacaktır.
+Hazırlayıcı yapılandırıldıktan sonra, her şeyin yolunda olduğunu doğrulamak için `packer validate` ile bir kez daha kontrol edin, sonra `packer build example.json` ile kurulumu gerçekleştirin. Ekran çıktısı, ilk imajınızı oluşturduğunuz gibi görünmelidir; ek olarak, hazırlık işleminin gerçekleştirileceği yeni bir adım daha olacaktır.
 
 Çıktı, kabuk komut dosyalarının tüm çıktılarını içerdiğinden, bu kılavuzda yer alması çok detaya kaçacaktır. Sonuç olarak Redis'in başarıyla yüklendiğini görmeniz gerekir. Bundan sonra, Packer makineyi tekrar bir AMI'ye çevirir.
 
 Bu AMI'yi başlatacak olursanız, Redis'in önceden yüklenmiş olduğunu göreceksiniz. Etkileyici!
 
-Bu sadece temel bir örnektir. Gerçek bir dünyada kullanım örneğinde, uygulamanızı çalıştırmak için gerekli olan tüm bileşenleri içeren bir imaj hazırlıyor olabilirsiniz. Belki yalnızca bir web ortamı, böylece önceden oluşturulmuş web sunucuları için bir imaj oluşturabilirsiniz. Her şey önceden kurulduğundan, bu görüntüleri başlattığınızda tonlarca tasarruf sağlamış olacaksınız. Ek olarak, her şey önceden yüklendiğinden, imajları oldukları gibi test edebilir ve yayına alındığında herşeyin çalışır durumda olacağını bilebilirsiniz.
+Bu sadece temel bir örnektir. Gerçek bir dünyada kullanım örneğinde, uygulamanızı çalıştırmak için gerekli olan tüm bileşenleri içeren bir imaj hazırlıyor olabilirsiniz. Belki yalnızca bir web ortamı, böylece önceden oluşturulmuş web sunucuları için bir imaj oluşturabilirsiniz. Her şey önceden kurulduğundan, bu imajları başlattığınızda tonlarca tasarruf sağlamış olacaksınız. Ek olarak, her şey önceden yüklendiğinden, imajları oldukları gibi test edebilir ve yayına alındığında herşeyin çalışır durumda olacağını bilebilirsiniz.
 
 ### Paralel Kurulumlar
 
@@ -320,11 +319,11 @@ Bu, Packer'ın çok kullanışlı ve önemli bir özelliğidir. Örnek olarak, P
 
 Bu özellikten yararlanmaya başladıktan sonra, olasılıklar önünüzde açılmaya başlar.
 
-Bu başlangıç ​​kılavuzundaki örneğe devam edersek, AMI gibi bir DigitalOcean görüntüsü de oluşturacağız. Her ikisi de neredeyse aynı olacak: İskeleti önceden Redis  kurulmuş olan Ubuntu OS. Bununla birlikte, her iki platform için de kurulum yapacağımızdan, AMI'yi veya [DigitalOcean'un](https://www.digitalocean.com/) imajını kullanmak isteyip istemediğinize karar vereceğiz. Ya da her ikisini de kullanabiliriz.
+Bu başlangıç ​​kılavuzundaki örneğe devam edersek, AMI gibi bir DigitalOcean imajı de oluşturacağız. Her ikisi de neredeyse aynı olacak: İskeleti önceden Redis  kurulmuş olan Ubuntu OS. Bununla birlikte, her iki platform için de kurulum yapacağımızdan, AMI'yi veya [DigitalOcean'un](https://www.digitalocean.com/) imajını kullanmak isteyip istemediğinize karar vereceğiz. Ya da her ikisini de kullanabiliriz.
 
 #### DigitalOcean'u Kurma
      
-[DigitalOcean](https://www.digitalocean.com/) nispeten yeni ama çok popüler olan bir VPS sağlayıcısıdır. Yüksek performanslı, düşük maliyetli VPS sunucularının kaliteli bir sunumuna sahiptir. Bu örnek için bir DigitalOcean anlık görüntüsünü (snapshot) oluşturacağız.
+[DigitalOcean](https://www.digitalocean.com/) nispeten yeni ama çok popüler olan bir VPS sağlayıcısıdır. Yüksek performanslı, düşük maliyetli VPS sunucularının kaliteli bir sunumuna sahiptir. Bu örnek için bir DigitalOcean anlık imajını (snapshot) oluşturacağız.
 
 Bunu yapmak için, DigitalOcean ile bir hesaba ihtiyacınız olacak. [Şimdi DigitalOcean'da bir hesap açın.](https://www.digitalocean.com/) Kaydolmak ücretsizdir. "**Droplets**" (sunucular) saatlik ücretlendirildiğinden, Packer ile oluşturduğunuz her resim için sizden 0,01 $ ücret alınır. Bu hoşuna gitmediyse, sadece rehberi okuman da yeterlidir.
 
@@ -432,10 +431,10 @@ us-east-1: ami-376d1d5e
 
 Gördüğünüz gibi Packer hem Amazon hem de DigitalOcean imajlarını paralel olarak oluşturuyor. Her biri farklı renklerle bazı bilgiler verir (yukarıdaki blokta göremediğiniz halde), böylece komutu çalıştırdığınızda gerçekleştirilen eylemlerin tanımlanması daha kolaydır.
 
-Kurulumların sonunda, Packer yaratılmış imajları (bir AMI ve bir DigitalOcean anlık görüntüsü) listeler. Yaratılan her iki imajda da önceden Redis kurulmuş temel Ubuntu kurulumlarıdır.
+Kurulumların sonunda, Packer yaratılmış imajları (bir AMI ve bir DigitalOcean anlık imajı) listeler. Yaratılan her iki imajda da önceden Redis kurulmuş temel Ubuntu kurulumlarıdır.
 
 ### Vagrant Nesneleri (Box)
-Packer, bir kurucunun (AMI veya düz VMware görüntüsü gibi) çıktılarını alıp bir Vagrant Nesnesine (Vagrant Box) dönüştürme yeteneğine de sahiptir.
+Packer, bir kurucunun (AMI veya düz VMware imajı gibi) çıktılarını alıp bir Vagrant Nesnesine (Vagrant Box) dönüştürme yeteneğine de sahiptir.
 
 Bu operasyon, [Ön tanımlı işlemler(post-processors)](https://www.packer.io/docs/templates/post-processors.html) kullanılarak yapılır. Bunlar, daha önce çalışan kurucunun (builder) veya Ön tanımlı işlemlerin (post-processors) oluşturduğu bir çıktıyı (artifact) alır ve yeni bir çıktıya (artifact) dönüştürür. Vagrant `post-processor`, bir kurucudan bir çıktı alır ve bir Vagrant nesnesine dönüştürür.
 
