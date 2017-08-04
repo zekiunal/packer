@@ -19,13 +19,13 @@ Bir makine imajı, önceden yapılandırılmış bir işletim sistemi ve yeni ç
 
 Packer tüm bunları değiştirdi. Packer'ın kullanımı kolaydır ve herhangi bir makine imajının yaratılmasını otomatikleştirir. Packer tarafından oluşturulan makina imajlarına yazılım yüklemek ve yapılandırmak için Chef veya Puppet gibi bir çözümü kullanmaya teşvik ederek modern yapılandırma yönetimini benimser.
 
-Başka bir deyişle: Packer, modern çağa önceden hazırlanmış makina imajlarını getirerek, kullanılmayan potansiyelin ve yeni fırsatların değerlendirmesini sağladı.
+Başka bir deyişle: Packer, modern çağa önceden hazırlanmış makina imajlarını getirerek, kullanılmayan potansiyelin ve yeni fırsatların değerlendirmesini sağlar.
 
 ### Packer Kullanmanın Avantajları
    
 **Süper hızlı altyapı dağıtımı.** Packer tamamen hazır ve yapılandırılmış makina imajlarını, birkaç dakika veya saat yerine saniyeler içinde başlatmanızı sağlar. Geliştirme amaçlı sanal makineleri saniyeler içinde piyasaya sürülebileceğinden, sadece yayına alma süreçleri için değil, geliştirme süreçleriniz için de faydalıdır.
 
-**Birden çok sağlayıcı için taşınabilirlik.** Packer, birden fazla platform için aynı imajları oluşturduğundan, yayına alma süreciniz için AWS, test/kalite kontrolü için OpenStack gibi özel bir bulutt  ve geliştirme ortamınız için VMware veya VirtualBox gibi masaüstü sanallaştırma çözümlerini kullanabilirsiniz. Her ortam için, aynı taşınabilir imajlar üretildiğinden taşınabilirlik sağlanmış olur.
+**Birden çok sağlayıcı için taşınabilirlik.** Packer, birden fazla platform için aynı imajları oluşturduğundan, yayına alma süreciniz için AWS, test/kalite kontrolü için OpenStack gibi özel bir bulut ve geliştirme ortamınız için VMware veya VirtualBox gibi masaüstü sanallaştırma çözümlerini kullanabilirsiniz. Her ortam için, aynı taşınabilir imajlar üretildiğinden taşınabilirlik sağlanmış olur.
 
 **Geliştirilmiş kararlılık.** Packer, bir imajı kurulurken, makineye tüm yazılımları yükler ve yapılandırır. Eğer komut dosyalarında hata varsa, makine açıldıktan birkaç dakika yerine daha erken aşamada hata yakalanabilir.
 
@@ -39,7 +39,7 @@ Ne için bekliyorsun? Başlayalım!
 
 Artık Packer'ın ne yaptığını ve imaj yaratmanın faydalarının ne olduğunu biliyorsun. Bu bölümde, Packer için bazı kullanım durumlarını listeleyeceğiz. Bunun kapsamlı bir liste olmadığını unutmayın. Burada listelenmeyen birçok kullanım örneği var. Bu liste, Packer'ın işlemlerinizi nasıl geliştirebileceği hakkında size bir fikir vermek amacıyla verilmiştir.
 
-### Sürekli Dağıtım
+### Sürekli Dağıtım (Continuous Delivery)
 
 Packer hafif, taşınabilir ve komut satırı tabanlıdır. Chef/Puppet'e yapılan her değişiklikte birden fazla platform için yeni makine imajları oluşturmak için kullanılabilir. Bu sebeple, sürekli dağıtım hattınızın merkezine koymanız için mükemmel bir araçtır. 
 
@@ -51,9 +51,9 @@ Packer, geliştirme, test etme ve yayına alma ortamlarınızı olabildiğince b
 
 Bu yeteneği yukarıdaki sürekli dağıtımlı durumuyla eşleştirin ve geliştirme aşamasından, yayına almaya kadar tutarlı çalışma ortamları için oldukça esnek bir sisteme sahip olun.
 
-### Cihaz/Demo Oluşturma
+### Ortam/Demo Oluşturma
 
-Packer, paralel olarak birden fazla platform için tutarlı imajlar oluşturduğundan, cihazlar ve tek kullanımlık ürün demoları oluşturmak için mükemmeldir. Yazılımınız değiştikçe, otomatik olarak yazılımı önceden yüklenmiş  cihazlar oluşturabilirsiniz. Potansiyel kullanıcılar daha sonra istedikleri ortamda yazılımınızı kullanmaya başlayabilir.
+Packer, paralel olarak birden fazla platform için tutarlı imajlar oluşturduğundan, ortamlar ve tek kullanımlık ürün demoları oluşturmak için mükemmeldir. Yazılımınız değiştikçe, otomatik olarak yazılımı önceden yüklenmiş ortamlar oluşturabilirsiniz. Potansiyel kullanıcılar daha sonra istedikleri ortamda yazılımınızı kullanmaya başlayabilir.
 
 Yazılımı karmaşık gereksinimlerle birlikte paketlemek hiç bu kadar kolay olmamıştı.
 
