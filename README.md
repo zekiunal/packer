@@ -799,7 +799,7 @@ Bir şablon, Packer'ın çeşitli bileşenlerini yapılandıran bir dizi bölüm
 
 #### Yorumlar
 
-JSON yorumları desteklemiyor ve Packer tanımlayamedığı bölümleri doğrulama hataları olarak bildiriyor. Şablona yorum eklemek isterseniz, bir ağacın en üst düğümüne (root) alt çizgi önekini ekleyebilirsiniz. Örnek:
+JSON yorumları desteklemiyor ve Packer tanımlayamadığı bölümleri doğrulama hataları olarak bildiriyor. Şablona yorum eklemek isterseniz, bir ağacın en üst düğümüne (root) alt çizgi önekini ekleyebilirsiniz. Örnek:
 
 ```json
 {
