@@ -197,9 +197,9 @@ Bu, kullanıma hazır olan temel bir şablondur. Temel bir JSON nesnesi olarak h
 
 Bu örnekte, yalnızca `amazon-ebs` türünde tek bir kurucu (`builder`) yapılandırıyoruz. Amazon EC2 AMI kurucusu Packer ile birlikte gelir. Bu kurucu, kaynak bir AMI başlatarak EBS destekli bir AMI oluşturur, bunun üzerine gerekli hazırlıkları yapar ve yeni bir AMI oluşturur.
 
-Nesne içindeki ek tanımlar, erişim sağlayıcı bilgileri, kullanılacak kaynak AMI ve benzeri şeyleri belirten bu kurucu için gerekli yapılandırmadır. Bir kurucu için mevcut yapılandırma değişkenlerinin tam seti her üreticiye özeldir ve bu [belgede](https://www.packer.io/docs/index.html) bulunabilir.
+Nesne içindeki ek tanımlar, erişim sağlayıcı bilgileri, kullanılacak kaynak AMI ve benzeri şeyleri belirten bu kurucu için gerekli yapılandırmadır. Bir kurucu için mevcut yapılandırma değişkenlerinin tam listesi her üreticiye özeldir ve bu [belgede](https://www.packer.io/docs/index.html) bulunabilir.
 
-Bu şablonu kullanmadan ve bir imaj oluşturmadan önce, `packer validate example.json` komutunu çalıştırarak şablonu doğrulalım. Bu komut, doğrulama yapmak için sözdizimini ve yapılandırma değerlerini kontrol eder. Şablonun geçerli olması gerektiği için çıkış aşağıdaki gibi görünmelidir. Herhangi bir hata varsa, bu komut size hatayı bildirecektir.
+Bu şablonu kullanmadan ve bir imaj oluşturmadan önce, `packer validate example.json` komutunu çalıştırarak şablonu doğrulalım. Bu komut, doğrulama yapmak için sözdizimini ve yapılandırma değerlerini kontrol eder. Şablonun geçerli olması gerektiği için çıktı aşağıdaki gibi görünmelidir. Herhangi bir hata varsa, bu komut size hatayı bildirecektir.
 
 ```bash
 $ packer validate example.json
@@ -208,8 +208,7 @@ Template validated successfully.
 
 Şimdi, bu şablondan imajını oluşturalım.
 
-Zeki bir okuyucu, önceden Redis kurulmuş bir imaj oluşturacağımızı ve buna rağmen yaptığımız şablonun herhangi bir yerinde Redis'e referans verilmediğini söyleyebilir. Aslında dokümantasyonun bu kısmı yalnızca ilk temel, hazırlıkları yapılmamış bir imaj oluşturulmasını kapsamaktadır. Hazırlık konusunu ele alan bir sonraki bölümde Redis'in kurulumuna değinilecektir.
-
+Zeki bir okuyucu, önceden Redis kurulmuş bir imaj oluşturacağımızı ve buna rağmen yaptığımız şablonun herhangi bir yerinde Redis'e referans verilmediğini söyleyebilir. Aslında dokümantasyonun bu kısmı yalnızca temel hazırlıkları yapılmamış bir imaj oluşturulmasını kapsamaktadır. Hazırlık konusunu ele alan bir sonraki bölümde Redis'in kurulumuna değinilecektir.
 
 ### İlk İmaj
 
