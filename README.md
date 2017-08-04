@@ -860,7 +860,6 @@ Bir şablonda, kurucu tanımlarının bir bölümü şuna benzer:
 }
 ```
 
-
 ##### Kurucu Tanımlama
 
 Tek bir kurucu (builder) tanımı, tam olarak bir kuruluma (build) eşlenir. Kurucu (builder) tanımı, en az bir tip girdi gerektiren bir JSON nesnesidir. Tip, kurulum için bir makine imajı oluşturmak için kullanılacak kurucunun (builder) adıdır.
@@ -877,7 +876,7 @@ Aşağıda, AWS kurucu (builder) yapılandırılmasına ilişkin örnek kurucu (
 }
 ```
 
-Adlandırılmış Kurucular
+##### Kurucuların Adlandırılması
 
 Packerda her kurulum bir ada sahiptir. Varsayılan olarak, ad kullanılan kurucunun adıdır. Bu genelde yeterlidir. Adlandırmalar neler olduğunu gösteren bir gösterge görevi görür. Bununla birlikte, isterseniz kurucu tanımında `name` anahtarını kullanarak özel bir ad belirtebilirsiniz.
 
@@ -888,3 +887,4 @@ Aynı kurucuyu kullanan birden çok kurulum tanımladıysanız, adlandırma yara
 Her kurulum tek bir [iletişim yolu](https://www.packer.io/docs/templates/communicator.html) ile ilişkilendirilir. İletişim yolları, uzaktaki bir makine (AWS örneği veya yerel sanal makine gibi) ile  bağlantı kurmak için kullanılır.
 
 Çeşitli kurucuların tüm örnekleri bazı iletişim yolu (genellikle SSH) kullanır, ancak iletişim yolları özelleştirilebilir, dolayısıyla [iletişim yoları](https://www.packer.io/docs/templates/communicator.html) dokümanlarını okumanızı öneririz.
+
