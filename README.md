@@ -888,3 +888,93 @@ Her kurulum tek bir [iletişim yolu](https://www.packer.io/docs/templates/commun
 
 Çeşitli kurucuların tüm örnekleri bazı iletişim yolu (genellikle SSH) kullanır, ancak iletişim yolları özelleştirilebilir, dolayısıyla [iletişim yoları](https://www.packer.io/docs/templates/communicator.html) dokümanlarını okumanızı öneririz.
 
+#### Şablonda İletişim Yolları (communicators)
+
+İletişim Yolları, Packer'ın kurduğu makineye dosyaları yüklemek, komut dosyalarını çalıştırmak vb. operasyonlar için kullandığı mekanizmadır.
+
+İletişim Yolları kurucu (builders) bölümünde yapılandırılır. Packer şu anda üç çeşit iletişim yollunu destekliyor:
+
+* **none** - İletişim yollu kullanılamaz. Bu seçenekte, hazırlayıcıların (provisioners) çoğunda kullanılamaz.
+
+* **ssh** - Makineye bir SSH bağlantısı kurulacaktır. Bu genellikle varsayılan değerdir.
+
+* **winrm** - Bir WinRM bağlantısı kurulacaktır.
+
+Yukarıdakilere ek olarak, bazı kurucular kullanabilecekleri özel iletişimcilere sahiptirler. Örneğin, Docker kurucusu, komut dosyalarını çalıştırmak için ` docker exec`, dosyaları kopyalamak için `docker cp`'yi kullanan bir "docker" iletişim yoluna sahiptir.
+
+##### İletişim Yollarını Kullanma
+
+Varsayılan olarak, genellikle SSH iletişim yolu kullanılır. Amazon gibi bazı kurucular otomatik olarak her şeyi yapılandırdıklarından, ek yapılandırma gerekli olmayabilir.
+
+Bununla birlikte, bir iletişim yolu belirtmek için, bir iletişim yolu tanımı bir kurulum içinde ayarlayın. Birden fazla kurulum, farklı iletişim yollarına sahip olabilir. Örnek:
+
+```json
+{
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "communicator": "ssh"
+    }
+  ]
+}
+```
+
+İletişim yolu belirledikten sonra, o İletişim yolu için diğer yapılandırma parametrelerini belirleyebilirsiniz. Bunlar aşağıda belgelenmiştir.
+
+##### SSH Communicator
+
+SSH Communicator, ana bilgisayara SSH ile bağlanır. Packer çalıştıran makinede bir SSH aracısı etkinleştirildiyse, otomatik olarak SSH aracısını uzaktaki ana makineye iletir.
+
+SSH Communicator'ın şu seçenekleri vardır:
+
+* **ssh_bastion_agent_auth** (boolean) - Doğruysa, ana SSH aracısı, kalkan sunucusu ile kimlik doğrulaması yapmak için kullanılacaktır. Varsayılan değer false olur.
+
+* **ssh_bastion_host** (string) - Gerçek SSH bağlantısı için kullanılacak bir kalesi barındırıcı.
+
+* **ssh_bastion_password** (string) - Ana kurtarma sunucusunun kimliğini doğrulamak için kullanılacak şifre.
+
+* **ssh_bastion_port** (integer) - Bas destinenin portu. Varsayılan değer:
+
+* **ssh_bastion_private_key_file** (string) - Görev kulübesi ile kimlik doğrulamasında kullanılacak özel anahtar dosyası.
+
+* **ssh_bastion_username** (string) - Ana kuleye bağlanacak kullanıcı adı.
+
+* **ssh_disable_agent** (boolean) - Doğruysa SSH aracı yönlendirme devre dışı kalır. Varsayılan değer false olur.
+
+* **ssh_file_transfer_method** (scp veya sftp) - Dosyaları, Güvenli kopya (varsayılan) veya SSH Dosya Aktarım Protokolü nasıl aktarılır.
+
+* **ssh_handshake_attempts** (integer) - SSH'nin bağlanabilmesi için girişimde bulunulacak el sıkışmaları sayısı. Bu varsayılan olarak 10'dur.
+
+* **ssh_host** (string) - SSH adresinin adresidir. Bu genellikle yapıcı tarafından otomatik olarak yapılandırılır.
+
+* **ssh_password** (string) - SSH ile kimlik doğrulamasında kullanılacak düz metin parolası.
+
+* **ssh_port** (integer) - SSH'ye bağlanmak için port. Bu varsayılan değer 22'dir.
+
+* **ssh_private_key_file** (string) - SSH ile kimlik doğrulama yapmak için kullanılacak bir PEM tarafından kodlanmış özel anahtar dosyasının yolu.
+
+* **ssh_pty** (boolean) - Doğruysa SSH bağlantısı için bir PTY istenecektir. Bu varsayılan false değeridir.
+
+* **ssh_timeout** (string) - SSH'nin kullanılabilir olması için beklenecek süre. Packer, makinenin ne zaman önyüklendiğini belirlemek için bunu kullanır, bu nedenle bu oldukça uzun sürer. Örnek değer: "10 m"
+
+* **ssh_username** (string) - ile SSH'ye bağlanmak için kullanıcı adı. SSH kullanılıyorsa gereklidir.
+
+##### WinRM Communicator
+
+WinRM Communicator'ın aşağıdaki seçenekleri vardır.
+
+* **winrm_host** (string) - WinRM'nin bağlanacağı adres.
+
+* **winrm_port** (integer) - Bağlanılacak WinRM portu. winrm_use_ssl true olarak ayarlandığında, bu, düz şifrelenmemiş bağlantı için 5985 ve SSL için 5986 olarak varsayılanıdır.
+
+* **winrm_username** (string) - WinRM'ye bağlanmak için kullanılacak kullanıcı adı.
+
+* **winrm_password** (string) - WinRM'ye bağlanmak için kullanılacak parola.
+
+* **winrm_timeout** (string) - WinRM'nin kullanılabilmesi için beklenecek süre. Bir Windows makinesinin kurulumunun genelde uzun sürdüğü için varsayılan değer "30m" dir.
+
+* **winrm_use_ssl** (boolean) - Doğruysa, WinRM için HTTPS kullanın
+
+* **winrm_insecure** (boolean) - Doğruysa, sunucu sertifikası zinciri ve ana makine adını kontrol etmeyin
+
+* **winrm_use_ntlm** (boolean) - Doğruysa, hedef konukta temel kimlik doğrulama gereksinimini ortadan kaldıran varsayılan (temel kimlik doğrulama) değil, WinRM için NTLM kimlik doğrulaması kullanılacaktır. Uzaktan bağlantı kimlik doğrulaması için daha fazla bilgi burada bulunabilir.
