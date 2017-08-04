@@ -842,7 +842,7 @@ Not: Bu örnek, bir Amazon Web Hizmetleri hesabı gerektirir. Kurulumun gerçekl
 }
 ```
 
-#### Şablon Kurucular (builders)
+#### Şablonda Kurucular (builders)
 
 Şablon içinde, kurucular (builders) bölümü, Packer'ın şablon için bir makine imajı oluşturmak için kullanması gereken tüm kurulumlardan oluşan bir dizi içerir.
 
@@ -859,3 +859,32 @@ Bir şablonda, kurucu tanımlarının bir bölümü şuna benzer:
   ]
 }
 ```
+
+
+##### Kurucu Tanımlama
+
+Tek bir kurucu (builder) tanımı, tam olarak bir kuruluma (build) eşlenir. Kurucu (builder) tanımı, en az bir tip girdi gerektiren bir JSON nesnesidir. Tip, kurulum için bir makine imajı oluşturmak için kullanılacak kurucunun (builder) adıdır.
+
+Tipe ek olarak, diğer girdiler kurucunun (builder) kendisini yapılandırır. Örneğin, AWS kurucusu (AWS builder) için, `access_key`, `secret_key` ve diğer bazı ayarlar gerektirir. Bunlar doğrudan kurucu (builder) tanımına yerleştirilir.
+
+Aşağıda, AWS kurucu (builder) yapılandırılmasına ilişkin örnek kurucu (builder) tanımı gösterilmektedir:
+
+```json
+{
+  "type": "amazon-ebs",
+  "access_key": "...",
+  "secret_key": "..."
+}
+```
+
+Adlandırılmış Kurucular
+
+Packerda her kurulum bir ada sahiptir. Varsayılan olarak, ad kullanılan kurucunun adıdır. Bu genelde yeterlidir. Adlandırmalar neler olduğunu gösteren bir gösterge görevi görür. Bununla birlikte, isterseniz kurucu tanımında `name` anahtarını kullanarak özel bir ad belirtebilirsiniz.
+
+Aynı kurucuyu kullanan birden çok kurulum tanımladıysanız, adlandırma yararlı olcaktır. Böyle bir durumda, adların benzersiz olması gerektiğinden, kuruculardan en az birinde farklı bir ad belirtmelisiniz.
+
+##### İletişim Yoları (communicator)
+
+Her kurulum tek bir [iletişim yolu](https://www.packer.io/docs/templates/communicator.html) ile ilişkilendirilir. İletişim yolları, uzaktaki bir makine (AWS örneği veya yerel sanal makine gibi) ile  bağlantı kurmak için kullanılır.
+
+Çeşitli kurucuların tüm örnekleri bazı iletişim yolu (genellikle SSH) kullanır, ancak iletişim yolları özelleştirilebilir, dolayısıyla [iletişim yoları](https://www.packer.io/docs/templates/communicator.html) dokümanlarını okumanızı öneririz.
