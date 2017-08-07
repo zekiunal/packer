@@ -522,3 +522,63 @@ Lütfen çift tırnaklı karakterlerin şablonların içinde (bu örnekte, ami_n
 
 > **Not:** Bu örnekteki Amazon kurucunun doğru şekilde yapılandırılmasına ilişkin daha fazla bilgi için [Amazon kurucu belgelerine](https://www.packer.io/docs/builders/amazon.html) bakın.
 
+#### Şablonda Ön Tanımlı İşlemler (post-processor)
+
+Bir şablon içindeki `post-processor` bölümü, kurucular tarafından oluşturulmuş imajlara yapılacak olan herhangi bir ön tanımlı işlemi yapılandırır. `post-processor`'lere örnek olarak, dosyaları sıkıştırmak, çıktıları (artifacts)  yüklemek vb. işlemler olabilir.
+
+`post-processor`'ler isteğe bağlıdır. Bir şablon içerisinde hiçbir `post-processor` tanımlanmazsa, imaj için herhangi bir işlem gerçekleştirilmeyecektir. Bir kurulumun çıktısı (artifact), kurucu tarafından oluşturulmuş imajdır.
+
+Bu dokümantasyon sayfası, bir ön tanımlı işlemin şablonda nasıl yapılandırılacağını açıklar. Bununla birlikte, her bir ön tanımlı işlem için mevcut olan belirli konfigürasyon seçenekleri için söz konusu ön tanımlı işlemin yardım sayfalarından istifade edilmelidir.
+
+Bir şablon içinde, `post-processor` tanımı şuna benzer:
+
+```json
+{
+  "post-processors": [
+    // ... one or more post-processor definitions here
+  ]
+}
+```
+
+Ön Tanımlı İşlem Tanımlamak
+
+Bir şablondaki `post-processor` dizisinde, bir işlemi tanımlamak için üç yol vardır. Basit tanımlar, ayrıntılı tanımlar ve dizi tanımları. 
+
+**Basit tanım**, sadece bir dizedir; `post-processor` işleminin adı olarak yazılır. Aşağıda bir örnek gösterilmiştir. Ön Tanımlı İşlem için ek yapılandırmaya ihtiyaç duyulmadığında basit tanımlar kullanılır.
+
+```json
+{
+  "post-processors": ["compress"]
+}
+```
+
+**Ayrıntılı tanımlama** bir JSON nesnesidir. Kurucu (builder) veya hazırlayıcı (provisioner) tanımına çok benzer. Ön Tanımlı İşlemin tipini belirten bir `type` alanı içerir. Ayrıca `post-processor` için ek yapılandırma içerebilir. Ön Tanımlı İşlemin tipinin ötesinde ek bir yapılandırmaya ihtiyaç duyulduğunda da ayrıntılı bir tanım kullanılır. Aşağıda bir örnek gösterilmiştir.
+
+```json
+{
+  "post-processors": [
+    {
+      "type": "compress",
+      "format": "tar.gz"
+    }
+  ]
+}
+```
+
+Bir **dizi tanımı**, basit veya ayrıntılı tanımlardan oluşan bir JSON dizisidir. Dizide tanımlanan Ön Tanımlı İşlemler, her bir çıktının (artifact ) sonucunu diğerine aktarır ve bir ara çıktılar (artifact) oluşturarak sırayla çalıştırılır. Bir dizi tanımı başka bir dizi tanımı içermeyebilir. Sıra tanımları, birden çok ön tanımlı işlemi zincirlemek için kullanılır. Aşağıda, bir kurucunun çıktısını sıkıştırıp, daha sonra yükleyen, ancak sıkıştırılmış çıktıyı korunmayan bir örnek gösterilmektedir.
+
+Bu ön tanımlı işlemlerin sırayla çalıştırılması çok önemlidir!
+
+```json
+{
+  "post-processors": [
+    [
+      "compress",
+      { "type": "upload", "endpoint": "http://example.com" }
+    ]
+  ]
+}
+```
+
+Tahmin edebileceğiniz gibi, basit ve ayrıntılı tanımlar, bir dizi tanımı için kısa yoldur.
+
