@@ -580,5 +580,55 @@ Bu ön tanımlı işlemlerin sırayla çalıştırılması çok önemlidir!
 }
 ```
 
-Tahmin edebileceğiniz gibi, basit ve ayrıntılı tanımlar, bir dizi tanımı için kısa yoldur.
+Tahmin edebileceğiniz gibi, **basit** ve **ayrıntılı** tanımlar, bir **dizi tanımı** için kısa yoldur.
 
+
+#### Atlas'da Vagrant Nesneleri (box) Oluşturma
+
+Packer yoluyla vagrant nesneleri oluştururken Atlas'a ön tanımlı işlemleri sıralamak önemlidir. Sıralama, ön tanımlı işlemlerin sırayla çalışmasını ve Atlas'a yüklemeden önce vagrant nesnesini oluşturmasını sağlar.
+
+```json
+{
+  "post-processors": [
+    [
+      {
+        "type": "vagrant",
+        "keep_input_artifact": false
+      },
+      {
+        "type": "atlas",
+        "only": ["virtualbox-iso"],
+        "artifact": "dundlermifflin/dwight-schrute",
+        "artifact_type": "vagrant.box",
+        "metadata": {
+          "provider": "virtualbox",
+          "version": "0.0.1"
+        }
+      }
+    ]
+  ]
+}
+```
+
+Atlas ön tanımlı işlemleri hakkında daha fazla bilgiyi [burada](https://www.packer.io/docs/post-processors/atlas.html) bulabilirsiniz.
+
+#### Girdi Olarak Kullanılan Çıktılar (Input Artifacts)
+
+Ön tanımlı işlemleri (post-processors) kullanırken, çıktıları (artifact) (kurucudan veya başka bir ön tanımlı işlemden gelen), ön tanımlı işlem (post-processors) çalıştırıldıktan sonra varsayılan olarak silinir. Bunun nedeni, genelde oluşturulan son çıktılara (artifact) giden ara çıktıları (artifact) daha sonra kullanmak istemezsiniz.
+
+Bununla birlikte, bazı durumlarda, ara çıktıları saklamak isteyebilirsiniz. Packer'a `keep_input_artifact` yapılandırmasını `true` olarak ayarlayarak bu çıktıların saklamasını sağlayabilirsiniz. Aşağıda bir örnek gösterilmiştir:
+
+```json
+{
+  "post-processors": [
+    {
+      "type": "compress",
+      "keep_input_artifact": true
+    }
+  ]
+}
+```
+
+Bu ayar, yalnızca belirli bir ön tanımlı işleme girdi olarak kullanılan çıktıyı kaldıracaktır. Bir dizi tipinde ön tanımlı işlem tanımladıysanız, ön tanımlı işlemler için girdi olarak kullanılan çıktı hariç olmak üzere, tüm ara çıktılar varsayılan olarak silinir; girdi olarak kullanılan çıktıları saklamak için açıkça belirtmelisiniz.
+
+> Not: Sezgisel bir okuyucu, birden fazla `post-processors` belirtilmişse (sırayla değil) ne olacağını merak ediyor olabilir. Packer'da, tüm `post-processors` girdi olarak kullanılan çıktıları saklamak için yapılandırma yapmımız gerektiriyor mu? Cevap hayır, elbette hayır. Packer en azından bir ön tanımlı işlemmin çıktısının tutulmasını istediğini anlamaya yetecek kadar akıllıdır, bu nedenle de onu koruyacaktır.
