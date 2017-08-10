@@ -5,7 +5,7 @@
 
 # Packer Başlangıç Kılavuzu
 
-Packer dünyasına hoşgeldiniz! Bu rehber Packer'ın ne olduğunu, sunduğu avantajları ve nasıl kullanmyaya başlayacağınızı açıklayacaktır. Packer'ı zaten biliyorsanız, [dokümantasyon](https://github.com/zekiunal/packer/blob/master/README.md) mevcut tüm özellikler için daha fazla referans sağlar.
+Packer dünyasına hoşgeldiniz! Bu rehber Packer'ın ne olduğunu, sunduğu avantajları ve nasıl kullanmyaya başlayacağınızı açıklayacaktır. Packer'ı zaten biliyorsanız, [dokümantasyon](https://github.com/zekiunal/packer/blob/master/DOCUMENTATION.md) mevcut tüm özellikler için daha fazla referans sağlar.
 
 ## Packer Nedir?
 
