@@ -547,7 +547,7 @@ Artık Atlas, önceden Redis yapılandırılmış bir AMI oluşturabiliyor. Bu h
 
 Bu Packer için başlangıç kılavuzuydu. Şimdi, temel Packer kullanımıyla ilgili daha rahat hissediyor olmalısınız. Şablonları anlıyor, kurucuları, sağlayıcıları vb. bileşenleri tanımlayabiliyorsunuz. Bu noktada Packer'ı gerçek senaryolarda düşünmeye ve kullanmaya hazırsınız.
 
-Bu noktadan sonra sizin için en önemli referans [dokümantasyon](https://www.packer.io/docs/index.html) olacaktır. Dokümantasyon, Packer'ın tüm genel özelliklerine ve yeteneklerine ilişkin güçlü bir referans kaynağıdır.
+Bu noktadan sonra sizin için en önemli referans [dokümantasyon](https://github.com/zekiunal/packer/blob/master/DOCUMENTATION.md) olacaktır. Dokümantasyon, Packer'ın tüm genel özelliklerine ve yeteneklerine ilişkin güçlü bir referans kaynağıdır.
 
 Packer'ın HashiCorp ekosistemi araçlarıyla nasıl çalıştığına ilişkin daha fazla bilgi edinmek istiyorsanız, [Atlas'a genel bir bakış](https://atlas.hashicorp.com/help/intro/getting-started) rehberini okuyun.
 
