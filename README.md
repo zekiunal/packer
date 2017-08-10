@@ -631,4 +631,19 @@ Bununla birlikte, bazı durumlarda, ara çıktıları saklamak isteyebilirsiniz.
 
 Bu ayar, yalnızca belirli bir ön tanımlı işleme girdi olarak kullanılan çıktıyı kaldıracaktır. Bir dizi tipinde ön tanımlı işlem tanımladıysanız, ön tanımlı işlemler için girdi olarak kullanılan çıktı hariç olmak üzere, tüm ara çıktılar varsayılan olarak silinir; girdi olarak kullanılan çıktıları saklamak için açıkça belirtmelisiniz.
 
-> Not: Sezgisel bir okuyucu, birden fazla `post-processors` belirtilmişse (sırayla değil) ne olacağını merak ediyor olabilir. Packer'da, tüm `post-processors` girdi olarak kullanılan çıktıları saklamak için yapılandırma yapmımız gerektiriyor mu? Cevap hayır, elbette hayır. Packer en azından bir ön tanımlı işlemmin çıktısının tutulmasını istediğini anlamaya yetecek kadar akıllıdır, bu nedenle de onu koruyacaktır.
+> Not: Sezgisel bir okuyucu, birden fazla `post-processors` belirtilmişse (sırayla değil) ne olacağını merak ediyor olabilir. Packer'da, tüm `post-processors` girdi olarak kullanılan çıktıları saklamak için yapılandırmamız  gerektiriyor mu? Cevap hayır, elbette hayır. Packer en azından bir ön tanımlı işlemmin çıktısının tutulmasını istediğini anlamaya yetecek kadar akıllıdır, bu nedenle de onu koruyacaktır.
+
+#### Sadece Belirli Kurucular İle Çalışmak
+
+Ön tanımlı işlemi (post-processors) yalnızca belirli kurucularla (builders) birlikte çalıştırmak için yapılandırmaları `only` veya `except` tanımları ile kullanabilirsiniz. Bu iki yapılandırmalar: `only` ön tanımlı işlemi,  belirtilen kurucularda çalıştıracak ve `except` ön tanımlı işlemi belirtilen kurucu dışında kalan kurucularda çalışacaktır.
+
+`only` tanımı için bir örnek aşağıda gösterilmiştir, ancak `except` kullanımı da benzerdir. `only` ve `except`  sadece **ayrıntılı** konfigürasyonlarda kullanılabilir. Çalışacak **dizi tanımlı** ön tanımlı işleriniz varsa, sadece tek bir post-işlemciyi etkileyecektir.
+
+```json
+{
+  "type": "vagrant",
+  "only": ["virtualbox-iso"]
+}
+```
+
+`only` veya `except` nin değerleri, kurucu tipleri (builder type) değil, kurucu adıdır (build name). If you recall, build names by default are just their builder type, but if you specify a custom name parameter, then you should use that as the value instead of the type.
