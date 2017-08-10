@@ -646,4 +646,4 @@ Bu ayar, yalnızca belirli bir ön tanımlı işleme girdi olarak kullanılan ç
 }
 ```
 
-`only` veya `except` nin değerleri, kurucu tipleri (builder type) değil, kurucu adıdır (build name). If you recall, build names by default are just their builder type, but if you specify a custom name parameter, then you should use that as the value instead of the type.
+`only` veya `except` konfigurasyonu, kurucu tipleri (builder type) değil, kurucu adıdır (build name). If you recall, build names by default are just their builder type, but if you specify a custom name parameter, then you should use that as the value instead of the type.
